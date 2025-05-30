@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase } from 'firebase/database';
+import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "lodziarnia-u-dziekana",
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
   messagingSenderId: "84611145297",
-  appId: "1:84611145297:web:f4e39ad5ff1f226fe3e270"
+  appId: "1:84611145297:web:f4e39ad5ff1f226fe3e270",
 };
 
 // Initialize Firebase
@@ -19,4 +19,4 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
-export { app, database };
+export { app, database};
