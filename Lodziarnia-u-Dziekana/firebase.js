@@ -1,12 +1,15 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import dotenv from "dotenv";
+dotenv.config();
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyArivSFwrbwSU-U_o50gTMPGaWtcurvWHg",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "lodziarnia-u-dziekana.firebaseapp.com",
   projectId: "lodziarnia-u-dziekana",
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
