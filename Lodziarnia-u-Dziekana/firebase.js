@@ -1,15 +1,14 @@
 // Import the functions you need from the SDKs you need
+import Constants from "expo-constants";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
-import dotenv from "dotenv";
-dotenv.config();
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: Constants.expoConfig?.extra?.firebaseApiKey || "your-api-key-here",
   authDomain: "lodziarnia-u-dziekana.firebaseapp.com",
   projectId: "lodziarnia-u-dziekana",
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
@@ -22,4 +21,4 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
-export { app, database};
+export { app, database };
