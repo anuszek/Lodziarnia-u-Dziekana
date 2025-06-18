@@ -19,6 +19,7 @@ const MAPPING = {
   'flame.fill': 'whatshot',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'face.smiling.fill': 'sentiment-satisfied',
 } as IconMapping;
 
 /**

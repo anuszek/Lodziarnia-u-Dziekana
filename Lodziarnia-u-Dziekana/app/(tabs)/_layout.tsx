@@ -47,6 +47,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="minesweeper"
+        options={{
+          title: 'Minesweeper',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="face.smiling" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
