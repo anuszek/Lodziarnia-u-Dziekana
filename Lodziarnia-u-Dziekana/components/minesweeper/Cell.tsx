@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export function Cell({
   row,
@@ -16,21 +16,33 @@ export function Cell({
   adjacentMines?: number;
 }) {
   return (
-    <View
-      style={{
-        width: 40,
-        height: 40,
-        backgroundColor: isOpen ? (isMine ? "red" : "lightgray") : "darkgray",
-        borderWidth: 1,
-        borderColor: "black",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View style={styles.cell}>
+      {!isOpen && !isFlagged && (
+        <Image
+          source={require("@/assets/images/minesweeper_sprites.png")}
+          style={{
+            width: 760 * (40 / 15), // scale sheet up so 15px = 40px
+            height: 705 * (40 / 15),
+            transform: [
+              { translateX: -14.5 * (40 / 15) }, // scale offset
+              { translateY: -194.3 * (40 / 15) },
+            ],
+          }}
+          resizeMode="cover"
+        />
+      )}
       {isOpen && !isMine && adjacentMines > 0 && (
         <Text style={{ color: "black", fontSize: 16 }}>{adjacentMines}</Text>
       )}
-      {isFlagged && <Text style={{ color: "blue", fontSize: 16 }}>🚩</Text>}
+      {/* {isFlagged && } */}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  cell: {
+    width: 40, // display size
+    height: 40,
+    overflow: "hidden",
+  },
+});
