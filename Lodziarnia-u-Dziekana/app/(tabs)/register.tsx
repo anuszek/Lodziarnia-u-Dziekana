@@ -30,13 +30,14 @@ const RegisterScreen = () => {
                 const user = userCredential.user;
                 Alert.alert('Success', 'Registration completed successfully!');
                 console.log('User registered:', user);
-
-                const db = getDatabase();
-                console.log('Database reference obtained:', db);
-                set(ref(db, 'users/' + email), {
-                    uid: user.uid,
-                    prefered_flavours: []
-                });
+                
+                // TODO: Fix this
+                // const db = getDatabase();
+                // console.log('Database reference obtained:', db);
+                // set(ref(db, 'users/' + email), {
+                //     uid: user.uid,
+                //     prefered_flavours: []
+                // });
                 // Navigate to the home screen or perform other actions
                 router.push('/(tabs)/explore');
             })
