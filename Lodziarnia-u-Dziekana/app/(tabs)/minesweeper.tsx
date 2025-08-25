@@ -1,9 +1,10 @@
 import { Cell } from "@/components/minesweeper/Cell";
-import { Text, View, StyleSheet, Dimensions, Pressable } from "react-native";
-import { useState, useEffect } from "react";
+import { Scoreboard } from "@/components/minesweeper/Scoreboard";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { useState, useEffect, useRef } from "react";
 
 const GRID_SIZE = 10;
-const MINE_COUNT = 15;
+const MINE_COUNT = 10;
 const { width: screenWidth } = Dimensions.get("window");
 
 type CellData = {
@@ -16,22 +17,51 @@ type CellData = {
   isClickedMine?: boolean;
 };
 
-export default function MinesweeperScreen() {
+export default function Minesweeper() {
   const boardPadding = 20;
   const availableWidth = screenWidth - boardPadding * 2;
   const cellSize = Math.floor(availableWidth / GRID_SIZE);
+
+  const [time, setTime] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [gameState, setGameState] = useState<
+    "playing" | "pressed" | "gameOver" | "gameWon"
+  >("playing");
+  const [minesLeft, setMinesLeft] = useState(MINE_COUNT);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [board, setBoard] = useState<CellData[][]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
 
-  // Initialize board
+  useEffect(() => {
+    if (gameStarted && gameState === "playing" && !gameOver && !gameWon) {
+      timerRef.current = setInterval(() => {
+        setTime((prev) => Math.min(999, prev + 1));
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [gameStarted, gameState, gameOver, gameWon]);
+
+  useEffect(() => {
+    if (gameOver) {
+      setGameState("gameOver");
+    } else if (gameWon) {
+      setGameState("gameWon");
+    } else {
+      setGameState("playing");
+    }
+  }, [gameOver, gameWon]);
+
   useEffect(() => {
     initializeBoard();
   }, []);
 
   const initializeBoard = () => {
-    // Create empty board
     const newBoard: CellData[][] = Array.from({ length: GRID_SIZE }, (_, row) =>
       Array.from({ length: GRID_SIZE }, (_, col) => ({
         row,
@@ -71,6 +101,11 @@ export default function MinesweeperScreen() {
     }
 
     setBoard(newBoard);
+
+    setTime(0);
+    setGameStarted(false);
+    setGameState("playing");
+    setMinesLeft(MINE_COUNT);
     setGameOver(false);
     setGameWon(false);
   };
@@ -107,6 +142,10 @@ export default function MinesweeperScreen() {
     )
       return;
 
+    if (!gameStarted) {
+      setGameStarted(true);
+    }
+
     const newBoard = [...board];
 
     if (newBoard[row][col].isMine) {
@@ -135,7 +174,11 @@ export default function MinesweeperScreen() {
     if (gameOver || gameWon || board[row][col].isOpen) return;
 
     const newBoard = [...board];
+    const wasFlagged = newBoard[row][col].isFlagged;
     newBoard[row][col].isFlagged = !newBoard[row][col].isFlagged;
+
+    setMinesLeft((prev) => (wasFlagged ? prev + 1 : prev - 1));
+
     setBoard(newBoard);
   };
 
@@ -177,17 +220,14 @@ export default function MinesweeperScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Minesweeper</Text>
-      {gameOver && (
-        <Pressable style={styles.gameStatusButton} onPress={initializeBoard}>
-          <Text style={styles.gameStatusText}>Game Over! Tap to Reset</Text>
-        </Pressable>
-      )}
 
-      {gameWon && (
-        <Pressable style={styles.gameStatusButton} onPress={initializeBoard}>
-          <Text style={styles.gameStatusText}>You Won! Tap to Play Again</Text>
-        </Pressable>
-      )}
+      <Scoreboard
+        minesLeft={minesLeft}
+        elapsedTime={time}
+        gameState={gameState}
+        onFacePress={initializeBoard}
+        size={cellSize * 0.8}
+      />
 
       <View style={[styles.board, { width: cellSize * GRID_SIZE }]}>
         {board.flat().map((cell) => (
