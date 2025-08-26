@@ -14,6 +14,7 @@ const firebaseConfig = {
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
   messagingSenderId: "84611145297",
   appId: "1:84611145297:web:f4e39ad5ff1f226fe3e270",
+  databaseURL: "https://lodziarnia-u-dziekana-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 // Initialize Firebase
