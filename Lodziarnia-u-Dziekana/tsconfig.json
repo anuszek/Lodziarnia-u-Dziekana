@@ -13,12 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
-<<<<<<< HEAD
-
-
-=======
->>>>>>> main
-  
-}
-
+, "scripts/Flavours.js", "scripts/Flavours.js"  ]
+  }
