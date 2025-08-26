@@ -14,7 +14,11 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ]
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
   
 }
+
