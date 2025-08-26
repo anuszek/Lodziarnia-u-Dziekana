@@ -25,19 +25,13 @@ const RegisterScreen = () => {
         }
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 //success
                 const user = userCredential.user;
-                Alert.alert('Success', 'Registration completed successfully!');
-                console.log('User registered:', user);
-                
-                // TODO: Fix this
-                // const db = getDatabase();
-                // console.log('Database reference obtained:', db);
-                // set(ref(db, 'users/' + email), {
-                //     uid: user.uid,
-                //     prefered_flavours: []
-                // });
+                // Store additional user info in Realtime Database
+                var data = {"email": email};
+                const db = getDatabase();
+                await set(ref(db, 'users/' + user.uid), data);
                 // Navigate to the home screen or perform other actions
                 router.push('/(tabs)/explore');
             })
@@ -52,6 +46,7 @@ const RegisterScreen = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#181717ff"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 value={email}
@@ -63,6 +58,7 @@ const RegisterScreen = () => {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                placeholderTextColor="#181717ff"
             />
             <TextInput
                 style={styles.input}
@@ -70,6 +66,7 @@ const RegisterScreen = () => {
                 secureTextEntry
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
+                placeholderTextColor="#181717ff"
             />
             <Button title="Register" onPress={handleRegister} />
         </View>
