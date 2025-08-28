@@ -1,6 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, PanResponder, Dimensions, Text, TouchableOpacity } from 'react-native';
-import Svg, { Line, Circle } from 'react-native-svg';
+import React, { useRef, useState, useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  PanResponder,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import Svg, { Line, Circle } from "react-native-svg";
 
 interface ConnectionPoint {
   id: string;
@@ -21,23 +28,41 @@ interface Wire {
   endPointId?: string;
 }
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 export default function WiresGame() {
-
   const [wires, setWires] = useState<Wire[]>([]); // Explicitly type as Wire[]
   const [activeWire, setActiveWire] = useState<Wire | null>(null); // Explicitly type as Wire or null
   const [leftPoints, setLeftPoints] = useState<ConnectionPoint[]>([]); // Explicitly type as ConnectionPoint[]
   const [rightPoints, setRightPoints] = useState<ConnectionPoint[]>([]); // Explicitly type as ConnectionPoint[]
-  const [connectedPairs, setConnectedPairs] = useState<Record<string, string>>({}); // {leftPointId: rightPointId}
+  const [connectedPairs, setConnectedPairs] = useState<Record<string, string>>(
+    {}
+  ); // {leftPointId: rightPointId}
   const [isSolved, setIsSolved] = useState<boolean>(false);
 
   const svgRef = useRef<Svg>(null); // Reference to the SVG component, explicitly type
 
-  // Define colors for the wires and points
-  const COLORS: string[] = ['red', 'blue', 'green', 'yellow', 'purple', 'orange']; // Explicitly type
+  const COLORS: string[] = [
+    "red",
+    "blue",
+    "green",
+    "yellow",
+    "purple",
+    "orange",
+  ]; // Explicitly type
 
   const POINT_SIZE: number = 20; // Size of the connection circles
+
+  const convertToSVGCoords = (screenX: number, screenY: number) => {
+    // Account for the View's centering and SVG positioning
+    const puzzleAreaX = (width - width * 0.9) / 2; // Center offset
+    const puzzleAreaY = height * 0.15; // Top offset (adjust based on your layout)
+
+    return {
+      x: screenX - puzzleAreaX,
+      y: screenY - puzzleAreaY,
+    };
+  };
 
   useEffect(() => {
     initializePoints();
@@ -45,22 +70,34 @@ export default function WiresGame() {
 
   const initializePoints = () => {
     const shuffledColors = [...COLORS].sort(() => Math.random() - 0.5);
-    const left: ConnectionPoint[] = shuffledColors.map((color, index) => ({ // Explicitly type
+    const rightShuffledColors = [...shuffledColors].sort(
+      () => Math.random() - 0.5
+    );
+
+    const svgWidth = width * 0.9;
+    const svgHeight = height * 0.7;
+
+    const topPadding = 50;
+    const bottomPadding = 50;
+    const usableHeight = svgHeight - topPadding - bottomPadding;
+
+    const left: ConnectionPoint[] = shuffledColors.map((color, index) => ({
       id: `left-${index}`,
       color: color,
-      x: width * 0.1,
-      y: (height * 0.8 / COLORS.length) * (index + 0.5),
+      x: svgWidth * 0.1,
+      y: topPadding + (usableHeight / (COLORS.length - 1)) * index,
       connectedTo: null,
     }));
 
-    const rightShuffledColors = [...shuffledColors].sort(() => Math.random() - 0.5);
-    const right: ConnectionPoint[] = rightShuffledColors.map((color, index) => ({ // Explicitly type
-      id: `right-${index}`,
-      color: color,
-      x: width * 0.9,
-      y: (height * 0.8 / COLORS.length) * (index + 0.5),
-      connectedTo: null,
-    }));
+    const right: ConnectionPoint[] = rightShuffledColors.map(
+      (color, index) => ({
+        id: `right-${index}`,
+        color: color,
+        x: svgWidth * 0.9,
+        y: topPadding + (usableHeight / (COLORS.length - 1)) * index,
+        connectedTo: null,
+      })
+    );
 
     setLeftPoints(left);
     setRightPoints(right);
@@ -69,93 +106,150 @@ export default function WiresGame() {
     setIsSolved(false);
   };
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: (evt, gestureState) => true,
+    onMoveShouldSetPanResponder: (evt, gestureState) => true,
 
-      onPanResponderGrant: (evt, gestureState) => {
-        const { pageX, pageY } = evt.nativeEvent;
+    onPanResponderGrant: (evt, gestureState) => {
+      // Now this will always use the current leftPoints state
+      if (leftPoints.length === 0) {
+        return;
+      }
 
-        const touchedLeftPoint = leftPoints.find(point =>
-          Math.abs(point.x - pageX) < POINT_SIZE && Math.abs(point.y - pageY) < POINT_SIZE
+      const { pageX, pageY } = evt.nativeEvent;
+      const svgCoords = convertToSVGCoords(pageX, pageY);
+
+      const touchedLeftPoint = leftPoints.find((point) => {
+        const distance = Math.sqrt(
+          Math.pow(point.x - svgCoords.x, 2) +
+            Math.pow(point.y - svgCoords.y, 2)
         );
+        return distance < POINT_SIZE;
+      });
 
-        if (touchedLeftPoint && !touchedLeftPoint.connectedTo) {
-          setActiveWire({
-            id: `temp-${Date.now()}`,
-            color: touchedLeftPoint.color,
-            startX: touchedLeftPoint.x,
-            startY: touchedLeftPoint.y,
-            endX: pageX,
-            endY: pageY,
-            startPointId: touchedLeftPoint.id,
-            // endPointId is optional for activeWire, so we don't include it here
-          });
+      if (touchedLeftPoint && !touchedLeftPoint.connectedTo) {
+        setActiveWire({
+          id: `temp-${Date.now()}`,
+          color: touchedLeftPoint.color,
+          startX: touchedLeftPoint.x,
+          startY: touchedLeftPoint.y,
+          endX: svgCoords.x,
+          endY: svgCoords.y,
+          startPointId: touchedLeftPoint.id,
+        });
 
-          setWires(prevWires => prevWires.filter(wire => wire.startPointId !== touchedLeftPoint.id));
-          setConnectedPairs(prevPairs => {
-            const newPairs = { ...prevPairs };
-            for (const key in newPairs) {
-              if (key === touchedLeftPoint.id || newPairs[key] === touchedLeftPoint.id) {
-                delete newPairs[key];
-              }
-            }
-            return newPairs;
-          });
-          setLeftPoints(prev => prev.map(p => p.id === touchedLeftPoint.id ? { ...p, connectedTo: null } : p));
-          setRightPoints(prev => prev.map(p => p.connectedTo === touchedLeftPoint.id ? { ...p, connectedTo: null } : p));
-        }
-      },
-
-      onPanResponderMove: (evt, gestureState) => {
-        if (activeWire) {
-          setActiveWire(prev => prev ? ({ // Add a null check for prev
-            ...prev,
-            endX: evt.nativeEvent.pageX,
-            endY: evt.nativeEvent.pageY,
-          }) : null);
-        }
-      },
-
-      onPanResponderRelease: (evt, gestureState) => {
-        if (activeWire) {
-          const { pageX, pageY } = evt.nativeEvent;
-
-          const touchedRightPoint = rightPoints.find(point =>
-            Math.abs(point.x - pageX) < POINT_SIZE && Math.abs(point.y - pageY) < POINT_SIZE
-          );
-
-          if (touchedRightPoint && !touchedRightPoint.connectedTo) {
-            const startPoint = leftPoints.find(p => p.id === activeWire.startPointId);
-            if (startPoint && startPoint.color === touchedRightPoint.color) {
-              const newWire: Wire = { // Explicitly type newWire
-                ...activeWire,
-                endX: touchedRightPoint.x,
-                endY: touchedRightPoint.y,
-                endPointId: touchedRightPoint.id,
-              };
-              setWires(prev => [...prev, newWire]);
-              setConnectedPairs(prev => ({ ...prev, [startPoint.id]: touchedRightPoint.id }));
-
-              setLeftPoints(prev => prev.map(p =>
-                p.id === startPoint.id ? { ...p, connectedTo: touchedRightPoint.id } : p
-              ));
-              setRightPoints(prev => prev.map(p =>
-                p.id === touchedRightPoint.id ? { ...p, connectedTo: startPoint.id } : p
-              ));
+        setWires((prevWires) =>
+          prevWires.filter((wire) => wire.startPointId !== touchedLeftPoint.id)
+        );
+        setConnectedPairs((prevPairs) => {
+          const newPairs = { ...prevPairs };
+          for (const key in newPairs) {
+            if (
+              key === touchedLeftPoint.id ||
+              newPairs[key] === touchedLeftPoint.id
+            ) {
+              delete newPairs[key];
             }
           }
-          setActiveWire(null);
+          return newPairs;
+        });
+        setLeftPoints((prev) =>
+          prev.map((p) =>
+            p.id === touchedLeftPoint.id ? { ...p, connectedTo: null } : p
+          )
+        );
+        setRightPoints((prev) =>
+          prev.map((p) =>
+            p.connectedTo === touchedLeftPoint.id
+              ? { ...p, connectedTo: null }
+              : p
+          )
+        );
+      }
+    },
+
+    onPanResponderMove: (evt, gestureState) => {
+      if (activeWire) {
+        const { pageX, pageY } = evt.nativeEvent;
+        const svgCoords = convertToSVGCoords(pageX, pageY);
+
+        setActiveWire((prev) =>
+          prev
+            ? {
+                ...prev,
+                endX: svgCoords.x,
+                endY: svgCoords.y,
+              }
+            : null
+        );
+      }
+    },
+
+    onPanResponderRelease: (evt, gestureState) => {
+      if (activeWire) {
+        const { pageX, pageY } = evt.nativeEvent;
+        const svgCoords = convertToSVGCoords(pageX, pageY);
+
+        const touchedRightPoint = rightPoints.find(
+          (point) =>
+            Math.abs(point.x - svgCoords.x) < POINT_SIZE &&
+            Math.abs(point.y - svgCoords.y) < POINT_SIZE
+        );
+
+        if (touchedRightPoint && !touchedRightPoint.connectedTo) {
+          const startPoint = leftPoints.find(
+            (p) => p.id === activeWire.startPointId
+          );
+
+          if (startPoint && startPoint.color === touchedRightPoint.color) {
+            const newWire: Wire = {
+              id: `wire-${Date.now()}`,
+              color: activeWire.color,
+              startX: activeWire.startX,
+              startY: activeWire.startY,
+              endX: touchedRightPoint.x,
+              endY: touchedRightPoint.y,
+              startPointId: activeWire.startPointId,
+              endPointId: touchedRightPoint.id,
+            };
+
+            setWires((prev) => [...prev, newWire]);
+            setConnectedPairs((prev) => ({
+              ...prev,
+              [activeWire.startPointId]: touchedRightPoint.id,
+            }));
+
+            setLeftPoints((prev) =>
+              prev.map((p) =>
+                p.id === activeWire.startPointId
+                  ? { ...p, connectedTo: touchedRightPoint.id }
+                  : p
+              )
+            );
+            setRightPoints((prev) =>
+              prev.map((p) =>
+                p.id === touchedRightPoint.id
+                  ? { ...p, connectedTo: activeWire.startPointId }
+                  : p
+              )
+            );
+          }
         }
-      },
-    })
-  ).current;
+
+        setActiveWire(null);
+      }
+    },
+  });
 
   useEffect(() => {
-    if (wires.length === COLORS.length && Object.keys(connectedPairs).length === COLORS.length) {
-      const allMatched = leftPoints.every(lp => {
-        const connectedRightPoint = rightPoints.find(rp => rp.id === lp.connectedTo);
+    if (
+      wires.length === COLORS.length &&
+      Object.keys(connectedPairs).length === COLORS.length
+    ) {
+      const allMatched = leftPoints.every((lp) => {
+        const connectedRightPoint = rightPoints.find(
+          (rp) => rp.id === lp.connectedTo
+        );
         return connectedRightPoint && lp.color === connectedRightPoint.color;
       });
       setIsSolved(allMatched);
@@ -169,31 +263,31 @@ export default function WiresGame() {
       <Text style={styles.title}>Connect the Wires!</Text>
       <View style={styles.puzzleArea} {...panResponder.panHandlers}>
         <Svg height="100%" width="100%" ref={svgRef}>
-          {leftPoints.map(point => (
+          {leftPoints.map((point) => (
             <Circle
               key={point.id}
               cx={point.x}
               cy={point.y}
               r={POINT_SIZE / 2}
-              fill={point.connectedTo ? 'lightgray' : point.color}
+              fill={point.connectedTo ? "lightgray" : point.color}
               stroke="black"
               strokeWidth="2"
             />
           ))}
 
-          {rightPoints.map(point => (
+          {rightPoints.map((point) => (
             <Circle
               key={point.id}
               cx={point.x}
               cy={point.y}
               r={POINT_SIZE / 2}
-              fill={point.connectedTo ? 'lightgray' : point.color}
+              fill={point.connectedTo ? "lightgray" : point.color}
               stroke="black"
               strokeWidth="2"
             />
           ))}
 
-          {wires.map(wire => (
+          {wires.map((wire) => (
             <Line
               key={wire.id}
               x1={wire.startX}
@@ -232,40 +326,40 @@ export default function WiresGame() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#333',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#333",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 20,
   },
   puzzleArea: {
     width: width * 0.9,
     height: height * 0.7,
-    backgroundColor: '#222',
+    backgroundColor: "#222",
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#555',
-    overflow: 'hidden',
+    borderColor: "#555",
+    overflow: "hidden",
   },
   solvedText: {
     fontSize: 30,
-    fontWeight: 'bold',
-    color: 'lightgreen',
+    fontWeight: "bold",
+    color: "lightgreen",
     marginTop: 20,
   },
   resetButton: {
     marginTop: 30,
-    backgroundColor: '#007bff',
+    backgroundColor: "#007bff",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   resetButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
   },
 });
