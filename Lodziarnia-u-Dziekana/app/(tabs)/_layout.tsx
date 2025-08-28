@@ -47,6 +47,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="register"
+        options={{
+          href: null, // Prevents this tab from being accessible
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="flavours"
+        options={{
+          href: null, // Prevents this tab from being accessible
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
