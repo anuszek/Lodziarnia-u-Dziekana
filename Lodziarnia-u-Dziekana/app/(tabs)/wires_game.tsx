@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Svg, { Line, Circle } from "react-native-svg";
+import Svg, { Line, Circle, Image } from "react-native-svg";
 
 interface ConnectionPoint {
   id: string;
@@ -45,13 +45,11 @@ export default function WiresGame() {
   const COLORS: string[] = [
     "red",
     "blue",
-    "green",
     "yellow",
-    "purple",
-    "orange",
+    "magenta",
   ]; // Explicitly type
 
-  const POINT_SIZE: number = 20; // Size of the connection circles
+  const POINT_SIZE: number = 35; // Size of the connection circles
 
   const convertToSVGCoords = (screenX: number, screenY: number) => {
     // Account for the View's centering and SVG positioning
@@ -260,18 +258,26 @@ export default function WiresGame() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Connect the Wires!</Text>
       <View style={styles.puzzleArea} {...panResponder.panHandlers}>
         <Svg height="100%" width="100%" ref={svgRef}>
+          <Image
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            href={require("@/assets/images/amogus/electricity_wiresBaseBack.png")}
+            preserveAspectRatio="xMidYMid slice"
+          />
+
           {leftPoints.map((point) => (
             <Circle
               key={point.id}
               cx={point.x}
               cy={point.y}
               r={POINT_SIZE / 2}
-              fill={point.connectedTo ? "lightgray" : point.color}
+              fill={point.color}
               stroke="black"
-              strokeWidth="2"
+              strokeWidth="5"
             />
           ))}
 
@@ -281,9 +287,9 @@ export default function WiresGame() {
               cx={point.x}
               cy={point.y}
               r={POINT_SIZE / 2}
-              fill={point.connectedTo ? "lightgray" : point.color}
+              fill={point.color}
               stroke="black"
-              strokeWidth="2"
+              strokeWidth="5"
             />
           ))}
 
@@ -295,7 +301,7 @@ export default function WiresGame() {
               x2={wire.endX}
               y2={wire.endY}
               stroke={wire.color}
-              strokeWidth="5"
+              strokeWidth="8"
               strokeLinecap="round"
             />
           ))}
@@ -307,15 +313,16 @@ export default function WiresGame() {
               x2={activeWire.endX}
               y2={activeWire.endY}
               stroke={activeWire.color}
-              strokeWidth="5"
+              strokeWidth="8"
               strokeLinecap="round"
-              strokeDasharray="5,5"
+              // fill={activeWire.color}
+              // strokeDasharray="5,5"
             />
           )}
         </Svg>
       </View>
 
-      {isSolved && <Text style={styles.solvedText}>Task Complete!</Text>}
+      {isSolved && <Text style={styles.solvedText}>Task Complete</Text>}
       <TouchableOpacity onPress={initializePoints} style={styles.resetButton}>
         <Text style={styles.resetButtonText}>Reset Puzzle</Text>
       </TouchableOpacity>
