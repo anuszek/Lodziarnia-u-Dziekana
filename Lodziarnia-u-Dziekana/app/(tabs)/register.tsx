@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { router } from 'expo-router';
 
@@ -29,10 +29,12 @@ const RegisterScreen = () => {
                 //success
                 const user = userCredential.user;
                 // Store additional user info in Realtime Database
-                var data = {"email": email};
+                var data = {"email": email, "isFirstLogin": true};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
                 // Navigate to the home screen or perform other actions
+                signOut(auth);
+                console.log("logged out");
                 router.push('/(tabs)/explore');
             })
             .catch((error) => {

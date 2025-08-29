@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase } from 'firebase/database';
+import { ref, get } from 'firebase/database';
 
 const Login = () => {
     const router = useRouter();
@@ -9,18 +11,34 @@ const Login = () => {
     const [password, setPassword] = React.useState('');
 
     const handleLogin = () => {
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log('User logged in:', user);
-                // Navigate to the home screen or perform other actions
-            })
-            .catch((error) => {
-                console.error('Error logging in:', error);
-                console.log('Logger: Error caught in login:', error);
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const db = getDatabase();
+            const userRef = ref(db, `users/${user.uid}`);
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    if (userData.isFirstLogin === true) {
+                        // Do something if it's the user's first login
+                        console.log('First login detected');
+                        // np. przekierowanie do setup page:
+                        router.push('/(tabs)/firebase_test');
+                    } else {
+                        console.log('User logged in:', user);
+                        router.push('/(tabs)/explore');
+                    }
+                } else {
+                    console.log("Brak danych użytkownika w bazie");
+                }
             });
-    };
+        })
+        .catch((error) => {
+            console.error('Error logging in:', error);
+            console.log('Logger: Error caught in login:', error);
+        });
+};
 
     const handleRegisterRedirect = () => {
         router.push('/(tabs)/register');
