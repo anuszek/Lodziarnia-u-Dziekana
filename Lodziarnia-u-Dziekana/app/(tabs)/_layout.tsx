@@ -26,7 +26,7 @@ export default function TabLayout() {
           default: {},
         }),
       }}>
-      <Tabs.Screen
+      <Tabs.Screen 
         name="index"
         options={{
           title: 'Home',
@@ -34,17 +34,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="firebase_test"
         options={{
           title: 'Firebase',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="flavours"
+        options={{
+          title: 'Smaki',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="ice.cream" color={color} />,
         }}
       />
       <Tabs.Screen

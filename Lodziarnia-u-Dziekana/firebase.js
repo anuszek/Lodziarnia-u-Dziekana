@@ -16,10 +16,15 @@ const firebaseConfig = {
   appId: "1:84611145297:web:f4e39ad5ff1f226fe3e270",
   databaseURL: "https://lodziarnia-u-dziekana-default-rtdb.europe-west1.firebasedatabase.app",
 };
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+
+
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 export { app, database };
+module.exports = { app };
