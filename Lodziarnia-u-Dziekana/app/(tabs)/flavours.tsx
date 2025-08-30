@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button, Alert } from "react-native";
 import { getDatabase, ref, get, child, set } from "firebase/database";
 import { app } from "../../firebase";
+import { getAuth } from "firebase/auth";
 type Flavour = {
   name: string;
   description: string;
 };
+const user = getAuth(app).currentUser;
 
 const DailyFlavors: React.FC = () => {
   const [flavors, setFlavors] = useState<Flavour[]>([]);
@@ -77,6 +79,7 @@ const DailyFlavors: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Dzisiejsze smaki:</Text>
       {flavors.length > 0 ? (
+        <>
         <FlatList
         data={flavors}
         keyExtractor={(item, index) => index.toString()}
@@ -85,8 +88,16 @@ const DailyFlavors: React.FC = () => {
             <Text style={styles.flavor}>{item.name}</Text>
             <Text style={styles.description}>{item.description}</Text>
         </View>
-  )}
-/>
+        )}
+  />
+   {user && (
+      <Button
+        title="Dodaj do ulubionych"
+        onPress={() => set(ref(getDatabase(app), `users/${user.uid}/favourites`), flavors)}
+      />
+    )}
+  </>
+
       ) : (
         <Text style={styles.noFlavors}>Brak smaków na dziś</Text>
       )}
