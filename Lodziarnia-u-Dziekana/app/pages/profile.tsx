@@ -6,32 +6,10 @@ import { useEffect, useState } from 'react';
 
 
 // Custom hook to get active user and update on auth state change
-function useActiveUser() {
-    const [activeUser, setActiveUser] = useState({
-        name: 'No Name',
-        email: 'No Email',
-    });
-
-    useEffect(() => {
-        const auth = getAuth();
-        const updateUser = (user: any) => {
-            setActiveUser({
-                name: user?.displayName || 'No Name',
-                email: user?.email || 'No Email',
-            });
-        };
-
-        updateUser(auth.currentUser);
-
-        const unsubscribe = auth.onAuthStateChanged(updateUser);
-
-        return () => unsubscribe();
-    }, []);
-
-    return activeUser;
-}
-
-const activeUser = useActiveUser();
+const activeUser = {
+    name: 'No Name',
+    email: 'No Email',
+};
 
 const handleLogout = () => {
     const auth = getAuth();

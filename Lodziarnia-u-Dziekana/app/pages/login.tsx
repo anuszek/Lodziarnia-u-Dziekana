@@ -20,7 +20,7 @@ const Login = () => {
             get(userRef).then((snapshot) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
-                    router.push('/(tabs)/flavours');
+                    router.push('/(tabs)/home');
                 } else {
                     console.log("Brak danych użytkownika w bazie");
                 }
@@ -33,7 +33,7 @@ const Login = () => {
 };
 
     const handleRegisterRedirect = () => {
-        router.push('/(tabs)/register');
+        router.push('/pages/register');
     };
 
     return (
