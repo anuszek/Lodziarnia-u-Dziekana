@@ -29,13 +29,11 @@ const RegisterScreen = () => {
                 //success
                 const user = userCredential.user;
                 // Store additional user info in Realtime Database
-                var data = {"email": email, "isFirstLogin": true};
+                var data = {"email": email};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
                 // Navigate to the home screen or perform other actions
-                signOut(auth);
-                console.log("logged out");
-                router.push('/(tabs)/explore');
+                router.push('/(tabs)/setup');
             })
             .catch((error) => {
                 Alert.alert('Error', error.message);

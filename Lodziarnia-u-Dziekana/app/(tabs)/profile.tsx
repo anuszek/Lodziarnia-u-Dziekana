@@ -2,15 +2,36 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { getAuth, signOut } from "firebase/auth";
 import { getDatabase, ref, remove } from 'firebase/database';
+import { useEffect, useState } from 'react';
 
 
-//TODO: FIX DISPLAY NAME and EMAIL
-const auth = getAuth();
-const user = auth.currentUser;
-const activeUser = {
-    name: user ? user.displayName : 'No Name',
-    email: user ? user.email : 'No Email',
-};
+// Custom hook to get active user and update on auth state change
+function useActiveUser() {
+    const [activeUser, setActiveUser] = useState({
+        name: 'No Name',
+        email: 'No Email',
+    });
+
+    useEffect(() => {
+        const auth = getAuth();
+        const updateUser = (user: any) => {
+            setActiveUser({
+                name: user?.displayName || 'No Name',
+                email: user?.email || 'No Email',
+            });
+        };
+
+        updateUser(auth.currentUser);
+
+        const unsubscribe = auth.onAuthStateChanged(updateUser);
+
+        return () => unsubscribe();
+    }, []);
+
+    return activeUser;
+}
+
+const activeUser = useActiveUser();
 
 const handleLogout = () => {
     const auth = getAuth();

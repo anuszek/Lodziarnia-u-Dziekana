@@ -20,15 +20,7 @@ const Login = () => {
             get(userRef).then((snapshot) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
-                    if (userData.isFirstLogin === true) {
-                        // Do something if it's the user's first login
-                        console.log('First login detected');
-                        // np. przekierowanie do setup page:
-                        router.push('/(tabs)/firebase_test');
-                    } else {
-                        console.log('User logged in:', user);
-                        router.push('/(tabs)/explore');
-                    }
+                    router.push('/(tabs)/flavours');
                 } else {
                     console.log("Brak danych użytkownika w bazie");
                 }
