@@ -48,6 +48,13 @@ export default function TabLayout() {
         }}
       />
       {/* <Tabs.Screen
+        name="minesweeper"
+        options={{
+          title: 'Minesweeper',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="face.smiling" color={color} />,
+        }}
+      /> */}
+      {/* <Tabs.Screen
         name="register"
         options={{
           //href: null, // Prevents this tab from being accessible
