@@ -19,21 +19,20 @@ const Login = () => {
             const userRef = ref(db, `users/${user.uid}`);
             get(userRef).then((snapshot) => {
                 if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    router.push('/(tabs)/flavours');
+                    console.log("User logged");
+                    
                 } else {
-                    console.log("Brak danych użytkownika w bazie");
+                    console.log("No user data in db");
                 }
             });
         })
         .catch((error) => {
             console.error('Error logging in:', error);
-            console.log('Logger: Error caught in login:', error);
         });
 };
 
     const handleRegisterRedirect = () => {
-        router.push('/(tabs)/register');
+        router.push('/auth/register');
     };
 
     return (

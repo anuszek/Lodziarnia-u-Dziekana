@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { getDatabase, ref, set, update } from 'firebase/database';
 import { getAuth, User, updateProfile } from "firebase/auth";
+import { router } from 'expo-router';
 
 const SetupTab: React.FC = () => {
     const [name, setName] = useState('');
@@ -38,6 +39,7 @@ const SetupTab: React.FC = () => {
                 age: Number(age),
             });
             setLoggedIn(true);
+            //router.push('/(pages)/flavours');
         } catch (error) {
             Alert.alert('Error saving user data');
         }
