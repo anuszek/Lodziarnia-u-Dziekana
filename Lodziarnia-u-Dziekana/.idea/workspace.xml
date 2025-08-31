@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6964628-27c4-4243-9cf8-dc97abe9088d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/minesweeper.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(tabs)/wires_game.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/_layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/flavours.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/login.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/profile.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/register.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/setup.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pages/setupflavours.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

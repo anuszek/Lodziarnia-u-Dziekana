@@ -49,6 +49,12 @@ const Home = () => {
             >
                 <Text style={styles.buttonText}>ඞ Amogus ඞ</Text>
             </TouchableOpacity>
+            <TouchableOpacity 
+                style={styles.button} 
+                onPress={() => router.push('/auth/login')}
+            >
+                <Text style={styles.buttonText}>Zaloguj</Text>
+            </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
