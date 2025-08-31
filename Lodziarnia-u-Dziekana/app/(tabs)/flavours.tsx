@@ -26,24 +26,40 @@ const DailyFlavors: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [usrlog, setUsrlog] = useState(false);
   const [favourites, setFavourites] = useState<string[]>([]);
-
+  
   const fetchFlavors = async () => {
-    try {
-      setLoading(true);
-      const dbRef = ref(getDatabase(app));
-      const snapshot = await get(child(dbRef, "todayFlavours"));
+  try {
+    setLoading(true);
+    const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-01"
+    const db = getDatabase(app);
+    const todayRef = ref(db, `todayFlavours/${today}`);
+    const snapshot = await get(todayRef);
 
-      if (snapshot.exists()) {
-        setFlavors(snapshot.val());
-      } else {
+    if (snapshot.exists()) {
+      setFlavors(snapshot.val());
+    } else {
+      // Randomize and save for today
+      const allSnapshot = await get(ref(db, "allFlavours"));
+      if (!allSnapshot.exists()) {
+        Alert.alert("Błąd", "Brak danych w allFlavours");
         setFlavors([]);
+        return;
       }
-    } catch (error) {
-      console.error("Błąd pobierania smaków:", error);
-    } finally {
-      setLoading(false);
+      const allFlavours = Array.isArray(allSnapshot.val())
+        ? allSnapshot.val()
+        : Object.values(allSnapshot.val());
+      const shuffled = [...allFlavours].sort(() => Math.random() - 0.5);
+      const todayFlavours = shuffled.slice(0, 3);
+      await set(todayRef, todayFlavours);
+      setFlavors(todayFlavours);
     }
-  };
+  } catch (error) {
+    console.error("Błąd pobierania smaków:", error);
+    setFlavors([]);
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => {
     if (user) {
       const db = getDatabase(app);
@@ -57,36 +73,6 @@ const DailyFlavors: React.FC = () => {
       setFavourites([]);
     }
   }, [user]);
-  const randomizeFlavors = async (count = 3) => {
-    try {
-      setLoading(true);
-      const db = getDatabase(app);
-      const snapshot = await get(ref(db, "allFlavours"));
-      if (!snapshot.exists()) {
-        Alert.alert("Błąd", "Brak danych w allFlavours");
-        setLoading(false);
-        return;
-      }
-
-      const allFlavours = snapshot.val();
-      const flavoursArray = Array.isArray(allFlavours)
-        ? allFlavours
-        : Object.values(allFlavours);
-
-      // Losowanie
-      const shuffled = [...flavoursArray].sort(() => Math.random() - 0.5);
-      const todayFlavours = shuffled.slice(0, count);
-
-      await set(ref(db, "todayFlavours"), todayFlavours);
-      Alert.alert("Sukces", "Wylosowano nowe smaki!");
-      await fetchFlavors();
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Błąd", "Nie udało się ustawić smaków");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     const auth = getAuth();
@@ -168,7 +154,6 @@ const DailyFlavors: React.FC = () => {
       ) : (
         <Text style={styles.noFlavors}>Brak smaków na dziś</Text>
       )}
-      <Button title="🎲 Wylosuj smaki" onPress={() => randomizeFlavors(3)} />
     </View>
   );
 };
