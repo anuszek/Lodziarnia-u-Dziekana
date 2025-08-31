@@ -15,10 +15,10 @@ function useActiveUser() {
     useEffect(() => {
         const auth = getAuth();
         const updateUser = (user: any) => {
-            setActiveUser({
-                name: user?.displayName || 'No Name',
-                email: user?.email || 'No Email',
-            });
+            // setActiveUser({
+            //     name: user?.displayName || 'No Name',
+            //     email: user?.email || 'No Email',
+            // });
         };
 
         updateUser(auth.currentUser);

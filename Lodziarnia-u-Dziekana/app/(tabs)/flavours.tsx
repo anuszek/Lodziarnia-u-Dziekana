@@ -1,8 +1,18 @@
 // DailyFlavors.tsx
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  Button,
+  Alert,
+} from "react-native";
 import { getDatabase, ref, get, child, set, update } from "firebase/database";
 import { app } from "../../firebase";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { TouchableOpacity } from "react-native";
 
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 type Flavour = {
@@ -10,12 +20,12 @@ type Flavour = {
   description: string;
 };
 
-
 const DailyFlavors: React.FC = () => {
   const [flavors, setFlavors] = useState<Flavour[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
   const [usrlog, setUsrlog] = useState(false);
+  const [favourites, setFavourites] = useState<string[]>([]);
 
   const fetchFlavors = async () => {
     try {
@@ -34,7 +44,19 @@ const DailyFlavors: React.FC = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (user) {
+      const db = getDatabase(app);
+      const favRef = ref(db, `users/${user.uid}/favourites`);
+      get(favRef).then((favSnap) => {
+        let favs: string[] = favSnap.exists() ? favSnap.val() : [];
+        if (!Array.isArray(favs)) favs = Object.values(favs);
+        setFavourites(favs);
+      });
+    } else {
+      setFavourites([]);
+    }
+  }, [user]);
   const randomizeFlavors = async (count = 3) => {
     try {
       setLoading(true);
@@ -96,47 +118,53 @@ const DailyFlavors: React.FC = () => {
             data={flavors}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-  <View style={styles.flavourRow}>
-        <View style={{ flex: 1 }}>
-      <Text style={styles.flavor}>{item.name}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-    </View>
-    {usrlog && (
-      <Button
-        title="★"
-        onPress={async () => {
-          if (!user) {
-            Alert.alert("Error", "User is not logged in.");
-            return;
-          }
-          try {
-            const db = getDatabase(app);
-            const favRef = ref(db, `users/${user.uid}/favourites`);
-            const favSnap = await get(favRef);
-            let currentFavs: string[] = favSnap.exists() ? favSnap.val() : [];
-            if (!Array.isArray(currentFavs)) {
-              currentFavs = Object.values(currentFavs);
-            }
-            if (!currentFavs.includes(item.name)) {
-              const updatedFavs = [...currentFavs, item.name];
-              await set(favRef, updatedFavs);
-              Alert.alert("Success", `${item.name} added to favourites!`);
-            } else {
-              Alert.alert("Info", `${item.name} is already in favourites.`);
-            }
-          } catch (error) {
-            Alert.alert("Error", "Could not add to favourites.");
-          }
-        }}
-      />
-    )}
-  </View>
-  
-)}
+              <View style={styles.flavourRow}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.flavor}>{item.name}</Text>
+                  <Text style={styles.description}>{item.description}</Text>
+                </View>
+                {usrlog && (
+                  <TouchableOpacity
+                    style={styles.starButton}
+                    onPress={async () => {
+                      if (!user) {
+                        Alert.alert("Error", "User is not logged in.");
+                        return;
+                      }
+                      try {
+                        const db = getDatabase(app);
+                        const favRef = ref(db, `users/${user.uid}/favourites`);
+                        let updatedFavs: string[];
+                        const isFavourite = favourites.includes(item.name);
+                        if (isFavourite) {
+                          updatedFavs = favourites.filter(
+                            (f) => f !== item.name
+                          );
+                        } else {
+                          updatedFavs = [...favourites, item.name];
+                        }
+                        await set(favRef, updatedFavs);
+                        setFavourites(updatedFavs);
+                      } catch (error) {
+                        Alert.alert("Error", "Could not update favourites.");
+                      }
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name={
+                        favourites.includes(item.name) ? "star" : "star-outline"
+                      }
+                      size={32}
+                      color={
+                        favourites.includes(item.name) ? "#ffe066" : "#ccc"
+                      }
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
           />
-
         </>
-
       ) : (
         <Text style={styles.noFlavors}>Brak smaków na dziś</Text>
       )}
@@ -165,15 +193,22 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   description: {
-  fontSize: 14,
-  color: "gray",
-},
+    fontSize: 14,
+    color: "gray",
+  },
   flavourRow: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: 12,
-},
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  starButton: {
+    padding: 6,
+    borderRadius: 20,
+    minWidth: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 export default DailyFlavors;
