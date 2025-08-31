@@ -8,7 +8,7 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyArivSFwrbwSU-U_o50gTMPGaWtcurvWHg",
+  apiKey: "your-api-key-here",
   authDomain: "lodziarnia-u-dziekana.firebaseapp.com",
   projectId: "lodziarnia-u-dziekana",
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
