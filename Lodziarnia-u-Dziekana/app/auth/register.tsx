@@ -32,8 +32,7 @@ const RegisterScreen = () => {
                 var data = {"email": email};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
-                // Navigate to the home screen or perform other actions
-                router.push('/pages/setup');
+                router.push('/auth/setup');
             })
             .catch((error) => {
                 Alert.alert('Error', error.message);
