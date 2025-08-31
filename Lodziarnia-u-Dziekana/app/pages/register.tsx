@@ -33,7 +33,7 @@ const RegisterScreen = () => {
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
                 // Navigate to the home screen or perform other actions
-                router.push('/(tabs)/setup');
+                router.push('/pages/setup');
             })
             .catch((error) => {
                 Alert.alert('Error', error.message);
