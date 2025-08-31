@@ -25,9 +25,8 @@ export default function TabLayout() {
           },
           default: {},
         }),
-      }}
-    >
-      <Tabs.Screen
+      }}>
+      <Tabs.Screen 
         name="index"
         options={{
           title: "Home",
@@ -37,45 +36,40 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="firebase_test"
         options={{
-          title: "Firebase",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="flame.fill" color={color} />
-          ),
+          title: 'Firebase',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="wires_game"
+        name="flavours"
         options={{
-          title: "Wires Game",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chevron.right" color={color} />
-          ),
+          title: 'Smaki',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="ice.cream" color={color} />,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="minesweeper"
         options={{
-          title: "Minesweeper",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol
-              size={28}
-              name="chevron.left.forwardslash.chevron.right"
-              color={color}
-            />
-          ),
+          title: 'Minesweeper',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="face.smiling" color={color} />,
         }}
-      />
+      /> */}
+      {/* <Tabs.Screen
+        name="register"
+        options={{
+          //href: null, // Prevents this tab from being accessible
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
+        }}
+      /> */}
+      {/* <Tabs.Screen
+        name="setup"
+        options={{
+          //href: null, // Prevents this tab from being accessible
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="flame.fill" color={color} />,
+        }}
+      /> */}
     </Tabs>
   );
 }
