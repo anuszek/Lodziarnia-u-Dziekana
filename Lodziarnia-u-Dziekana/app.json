@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Lodziarnia-u-Dziekana",
-    "slug": "Lodziarnia-u-Dziekana",
+    "slug": "lodziarnia-u-dziekana",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,6 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.lodziarnia.lodziarniaudziekana",
+      "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true
     },
     "web": {
@@ -40,7 +42,12 @@
       "typedRoutes": true
     },
     "extra": {
-      "firebaseApiKey": "your-actual-firebase-api-key-here"
-    }
+      "firebaseApiKey": "your-actual-firebase-api-key-here",
+      "router": {},
+      "eas": {
+        "projectId": "4af5c4f4-31ca-4571-b410-66c9cb4569d2"
+      }
+    },
+    "owner": "lodziarnia"
   }
 }

@@ -17,7 +17,7 @@
     "@react-navigation/native": "^7.1.6",
     "expo": "53.0.22",
     "expo-blur": "~14.1.4",
-    "expo-constants": "~17.1.6",
+    "expo-constants": "~17.1.7",
     "expo-font": "~13.3.1",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.0",
@@ -43,7 +43,9 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "tailwindcss": "^3.4.17",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "expo-notifications": "~0.31.4",
+    "expo-device": "~7.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

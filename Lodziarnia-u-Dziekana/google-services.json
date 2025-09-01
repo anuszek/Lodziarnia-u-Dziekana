@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "84611145297",
+    "firebase_url": "https://lodziarnia-u-dziekana-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "lodziarnia-u-dziekana",
+    "storage_bucket": "lodziarnia-u-dziekana.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84611145297:android:174d8195d071bd2be3e270",
+        "android_client_info": {
+          "package_name": "com.lodziarnia.lodziarniaudziekana"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDbC9dekUvdB5u1GqDvKfy1mT8AK_t6Ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
