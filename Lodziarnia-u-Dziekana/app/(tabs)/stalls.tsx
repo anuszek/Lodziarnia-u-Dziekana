@@ -21,4 +21,3 @@ export default function Stalls() {
   
 }
 
-const styles = StyleSheet.create({})
