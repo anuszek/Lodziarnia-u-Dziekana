@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import {getAuth, signOut, User} from 'firebase/auth';
 
@@ -14,7 +14,8 @@ const Home = () => {
 
     const handleSignOut = () => {
         const auth = getAuth();
-        signOut(auth);            
+        signOut(auth);      
+        router.replace('/');
     };
 
     const navigateTo = (screen: string) => {

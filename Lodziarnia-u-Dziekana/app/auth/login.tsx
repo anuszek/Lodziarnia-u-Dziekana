@@ -20,7 +20,8 @@ const Login = () => {
             get(userRef).then((snapshot) => {
                 if (snapshot.exists()) {
                     console.log("User logged");
-                    
+                    router.dismissAll()
+                    router.replace('/'); // Replace the current route with the home screen (or your desired route)
                 } else {
                     console.log("No user data in db");
                 }
