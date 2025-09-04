@@ -8,14 +8,12 @@ export default {
     scheme: "lodziarniaudziekana",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
-    ios: {
-      supportsTablet: true
-    },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff"
       },
+      package: "com.lodziarniaudziekana.app",
       config: {
         googleMaps: {
           apiKey: process.env.GOOGLE_MAPS_API_KEY
@@ -23,10 +21,22 @@ export default {
       },
       edgeToEdgeEnabled: true
     },
+    ios: {
+      bundleIdentifier: "com.lodziarniaudziekana.app",
+      buildNumber: "1.0.0",
+      config: {
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY
+      }
+    },
     web: {
       bundler: "metro",
       output: "static",
       favicon: "./assets/images/favicon.png"
+    },
+    extra: {
+      eas: {
+        projectId: "5b2dd4d1-051e-443f-a383-a1c5ccbea0a8"
+      }
     },
     plugins: [
       "expo-router",
@@ -37,7 +47,7 @@ export default {
           image: "./assets/images/splash-icon.png",
           dark: {
             backgroundColor: "#000000",
-            image: "./assets/images/splash-icon-dark.png"
+            image: "./assets/images/splash-icon.png"
           },
           imageWidth: 200
         }
