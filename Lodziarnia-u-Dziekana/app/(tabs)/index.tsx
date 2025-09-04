@@ -12,12 +12,6 @@ const Home = () => {
         setUser(auth.currentUser);
     }, []);
 
-    const handleSignOut = () => {
-        const auth = getAuth();
-        signOut(auth);      
-        router.replace('/');
-    };
-
     const navigateTo = (screen: string) => {
         router.push(`/screens/${screen}` as any);
     };
@@ -26,7 +20,11 @@ const Home = () => {
         <SafeAreaView style={styles.container}>
         <View style={styles.header}>
             <Text style={styles.title}>Lodziarnia u Dziekana</Text>
-            <Text style={styles.welcome}>Witaj, {user?.email}</Text>
+            {user ? (
+                <Text style={styles.welcome}>Witaj, {user.displayName}</Text>
+            ) : (
+                <Text style={styles.welcome}>Nie jesteś zalogowany</Text>
+            )}
         </View>
         
         <View style={styles.buttonsContainer}>
@@ -57,10 +55,6 @@ const Home = () => {
                 <Text style={styles.buttonText}>Zaloguj</Text>
             </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
-            <Text style={styles.logoutText}>Wyloguj</Text>
-        </TouchableOpacity>
     </SafeAreaView>
     );
 };
@@ -98,18 +92,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '600',
-    },
-    logoutButton: {
-        backgroundColor: '#FF3B30',
-        padding: 16,
-        borderRadius: 8,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    logoutText: {
-        color: 'white',
-        fontSize: 16,
         fontWeight: '600',
     },
 });
