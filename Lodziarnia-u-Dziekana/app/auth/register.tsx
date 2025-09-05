@@ -12,15 +12,15 @@ const RegisterScreen = () => {
 
     const handleRegister = () => {
         if (!email || !password || !confirmPassword) {
-            Alert.alert('Error', 'All fields are required.');
+            Alert.alert('Błąd', 'Wszystkie pola są wymagane.');
             return;
         }
         if (password !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match.');
+            Alert.alert('Błąd', 'Hasła nie pasują do siebie.');
             return;
         }
         if (!email_pattern.test(email)) {
-            Alert.alert('Error', 'Invalid email format.');
+            Alert.alert('Błąd', 'Nieprawidłowy format adresu e-mail.');
             return;
         }
         const auth = getAuth();
@@ -32,10 +32,11 @@ const RegisterScreen = () => {
                 var data = {"email": email};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
+                router.dismissAll();
                 router.push('/auth/setup');
             })
             .catch((error) => {
-                Alert.alert('Error', error.message);
+                Alert.alert('Błąd', error.message);
             });
     };
 
@@ -53,7 +54,7 @@ const RegisterScreen = () => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Password"
+                placeholder="Hasło"
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
@@ -61,13 +62,13 @@ const RegisterScreen = () => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Confirm Password"
+                placeholder="Potwierdź Hasło"
                 secureTextEntry
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
                 placeholderTextColor="#181717ff"
             />
-            <Button title="Register" onPress={handleRegister} />
+            <Button title="Zarejestruj" onPress={handleRegister} />
         </View>
     );
 };

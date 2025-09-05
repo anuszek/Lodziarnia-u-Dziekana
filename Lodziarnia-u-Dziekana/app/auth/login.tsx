@@ -50,14 +50,14 @@ const Login = () => {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Password"
+                placeholder="Hasło"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            <Button title="Login" onPress={handleLogin} />
+            <Button title="Zaloguj się" onPress={handleLogin} />
             <TouchableOpacity onPress={handleRegisterRedirect} style={styles.registerLink}>
-                <Text style={styles.registerText}>Don't have an account? Register</Text>
+                <Text style={styles.registerText}>Nie masz konta? Zarejestruj się</Text>
             </TouchableOpacity>
         </View>
     );
