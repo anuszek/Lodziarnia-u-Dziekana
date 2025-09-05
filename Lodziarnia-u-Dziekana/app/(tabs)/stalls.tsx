@@ -3,8 +3,6 @@ import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, Dimensions } from "react-native";
 
 export default function MapScreen() {
-  console.log("key: ", process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY);
-
   return (
     <View style={styles.container}>
       <MapView
