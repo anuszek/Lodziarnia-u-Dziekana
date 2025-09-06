@@ -37,15 +37,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="firebase_test"
-        options={{
-          title: "Firebase",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="flame.fill" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="flavours"
         options={{
           title: "Smaki",
@@ -60,6 +51,15 @@ export default function TabLayout() {
           title: "Stalls",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="paperplane.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="more"
+        options={{
+          title: "Games",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="gamecontroller.fill" color={color} />
           ),
         }}
       />

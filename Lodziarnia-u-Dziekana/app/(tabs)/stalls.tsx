@@ -21,7 +21,7 @@ const SAMPLE_STALLS: IceCreamStall[] = [
   {
     id: "1",
     name: "Lodziarnia u Dziekana",
-    coordinate: { latitude: 52.2297, longitude: 21.0122 },
+    coordinate: { latitude: 50.06748570596136, longitude: 19.91592382195521 },
     description:
       "Najlepsze lody rzemieślnicze w Warszawie! Używamy tylko najwyższej jakości składników.",
     rating: 4.8,
@@ -71,8 +71,8 @@ export default function MapScreen() {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
-          latitude: 52.2297, // Warsaw center
-          longitude: 21.0122,
+          latitude: 50.06748570596136,
+          longitude: 19.91592382195521,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
