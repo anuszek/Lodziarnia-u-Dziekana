@@ -120,12 +120,12 @@ const DailyFlavors: React.FC = () => {
             if (!currentFavs.includes(item.name)) {
               const updatedFavs = [...currentFavs, item.name];
               await set(favRef, updatedFavs);
-              Alert.alert("Success", `${item.name} added to favourites!`);
+              Alert.alert("Sukces", `${item.name} dodano do ulubionych!`);
             } else {
-              Alert.alert("Info", `${item.name} is already in favourites.`);
+              Alert.alert("Info", `${item.name} jest już w ulubionych.`);
             }
           } catch (error) {
-            Alert.alert("Error", "Could not add to favourites.");
+            Alert.alert("Błąd", "Nie udało się dodać do ulubionych.");
           }
         }}
       />
