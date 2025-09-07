@@ -1,12 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  PanResponder,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, PanResponder, Dimensions, Text, TouchableOpacity } from "react-native";
+import GlobalStyles from '../../styles/GlobalStyles';
 import Svg, { Line, Circle, Image } from "react-native-svg";
 
 interface ConnectionPoint {
@@ -257,7 +251,7 @@ export default function WiresGame() {
   }, [wires, connectedPairs, leftPoints, rightPoints]);
 
   return (
-    <View style={styles.container}>
+  <View style={GlobalStyles.container}>
       <View style={styles.puzzleArea} {...panResponder.panHandlers}>
         <Svg height="100%" width="100%" ref={svgRef}>
           <Image
@@ -323,26 +317,15 @@ export default function WiresGame() {
       </View>
 
       {isSolved && <Text style={styles.solvedText}>Task Complete</Text>}
-      <TouchableOpacity onPress={initializePoints} style={styles.resetButton}>
-        <Text style={styles.resetButtonText}>Reset Puzzle</Text>
+      <TouchableOpacity onPress={initializePoints} style={GlobalStyles.button}>
+        <Text style={GlobalStyles.buttonText}>Reset Puzzle</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#333",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 20,
-  },
+  // ...existing code...
   puzzleArea: {
     width: width * 0.9,
     height: height * 0.7,
@@ -358,15 +341,5 @@ const styles = StyleSheet.create({
     color: "lightgreen",
     marginTop: 20,
   },
-  resetButton: {
-    marginTop: 30,
-    backgroundColor: "#007bff",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  resetButtonText: {
-    color: "#fff",
-    fontSize: 18,
-  },
+  // ...existing code...
 });
