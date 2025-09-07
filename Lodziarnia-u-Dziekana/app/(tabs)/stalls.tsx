@@ -23,8 +23,8 @@ const SAMPLE_STALLS: IceCreamStall[] = [
     name: "Lodziarnia u Dziekana",
     coordinate: { latitude: 50.06748570596136, longitude: 19.91592382195521 },
     description:
-      "Najlepsze lody rzemieślnicze w Warszawie! Używamy tylko najwyższej jakości składników.",
-    rating: 4.8,
+      "Najlepsze lody w mieście! Tradycyjne receptury i świeże składniki.",
+    rating: 5.0,
     openHours: "10:00 - 22:00",
     specialties: ["Pistacjowe", "Czekoladowe", "Waniliowe", "Sezonowe smaki"],
   },

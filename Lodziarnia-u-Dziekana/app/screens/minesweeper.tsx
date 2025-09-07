@@ -1,7 +1,30 @@
 import { Cell } from "@/components/minesweeper/Cell";
 import { Scoreboard } from "@/components/minesweeper/Scoreboard";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "expo-router";
+
+const router = useRouter();
+
+function addPointsToUser(pointsToAdd: number) {
+  const auth = require("firebase/auth");
+  const user = auth.getAuth().currentUser;
+  const db = require("firebase/database");
+  if (user) {
+    const userRef = db.ref(db.getDatabase(), "users/" + user.uid + "/points");
+    db.get(userRef).then((snapshot: any) => {
+      const currentPoints = snapshot.val() || 0;
+      db.set(userRef, currentPoints + pointsToAdd);
+      Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
+        { text: "OK", onPress: () => router.replace("/") },
+      ]);
+      router.dismissAll();
+      router.replace("/");
+    });
+  }else {
+    return;
+  }
+}
 
 const GRID_SIZE = 10;
 const MINE_COUNT = 10;
@@ -214,6 +237,7 @@ export default function Minesweeper() {
     }
     if (closedNonMines === 0) {
       setGameWon(true);
+      addPointsToUser(10);
     }
   };
 
@@ -249,6 +273,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 50,
+    backgroundColor: "#f0f0f0",
   },
   title: {
     fontSize: 24,

@@ -1,25 +1,37 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import GlobalStyles from '../../styles/GlobalStyles';
+import { router } from 'expo-router';
 
 const MoreScreen = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>asdfghjk</Text>
+        <View style={GlobalStyles.container}>
+            <Text style={GlobalStyles.title}>Minigierki</Text>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push('/screens/minesweeper')}
+            >
+                <Text style={GlobalStyles.buttonText}>Saper</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => router.push('/screens/wires_game')}
+            >
+                <Text style={GlobalStyles.buttonText}>Wires Game</Text>
+            </TouchableOpacity>
         </View>
+        
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fafafa',
+const styles = {
+    button: {
+        backgroundColor: '#e663d0ff',
+        padding: 15,
+        borderRadius: 10,
+        marginVertical: 10,
+        width: '80%',
     },
-    text: {
-        fontSize: 20,
-        color: '#888',
-    },
-});
+};
 
 export default MoreScreen;

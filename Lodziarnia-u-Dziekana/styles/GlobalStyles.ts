@@ -21,7 +21,10 @@ const GlobalStyles = StyleSheet.create({
     color: theme.tint,
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 2,
+    marginTop: 40,
+    textAlign: 'center',
+
   },
   button: {
     backgroundColor: theme.tint,
@@ -43,8 +46,9 @@ const GlobalStyles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     fontSize: 16,
+    fontFamily: 'System',
     backgroundColor: '#fafafa',
-    color: theme.text,
+    color: '#000',
   },
   card: {
     backgroundColor: theme.background,

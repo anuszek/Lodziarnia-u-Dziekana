@@ -5,6 +5,7 @@ import { getDatabase, ref, get, child, set, update } from "firebase/database";
 import { app } from "../../firebase";
 
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import GlobalStyles from "@/styles/GlobalStyles";
 type Flavour = {
   name: string;
   description: string;
@@ -81,15 +82,15 @@ const DailyFlavors: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={GlobalStyles.container}>
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Dzisiejsze smaki:</Text>
+    <View style={GlobalStyles.container}>
+      <Text style={GlobalStyles.title}>Dzisiejsze smaki:</Text>
       {flavors.length > 0 ? (
         <>
           <FlatList
@@ -146,23 +147,16 @@ const DailyFlavors: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   flavor: {
     fontSize: 18,
     paddingVertical: 5,
   },
   noFlavors: {
     fontSize: 18,
-    color: "gray",
+    textAlign: "center",
+    marginVertical: 20,
+    fontWeight: "bold",
+    color: "red",
   },
   description: {
   fontSize: 14,
