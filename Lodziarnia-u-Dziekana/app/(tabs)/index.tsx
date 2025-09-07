@@ -26,25 +26,25 @@ const Home = () => {
 // Articles fetching is currently disabled
 // Remind when i'll care
 // Head hurts :<<<<<<<<
-//     useEffect(() => {
-//     const fetchArticles = async () => {
-//       try {
-//         const q = query(collection(dbFirestore, 'articles'));
-//         const snapshot = await getDocs(q);
-//         const list: any[] = [];
-//         snapshot.forEach((doc) => {
-//           list.push({ id: doc.id, ...doc.data() });
-//         });
-//         setArticles(list);
-//       } catch (error) {
-//         console.error('Error fetching articles:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+    useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const q = query(collection(dbFirestore, 'articles'));
+        const snapshot = await getDocs(q);
+        const list: any[] = [];
+        snapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setArticles(list);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//     fetchArticles();
-//   }, []);
+    fetchArticles();
+  }, []);
   
     return (
     <SafeAreaView style={GlobalStyles.container}>
