@@ -37,20 +37,12 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         <>
-          <Stack.Screen name="auth/login" />
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen
-            name="screens/profile"
-            options={{ headerShown: true, title: "Profil" }}
-          />
-          <Stack.Screen
-            name="screens/minesweeper"
-            options={{ headerShown: true, title: "Saper" }}
-          />
-          <Stack.Screen
-            name="screens/wires_game"
-            options={{ headerShown: true, title: "Kabelki" }}
-          />
+          <Stack.Screen name="screens/wires_game" />
+          <Stack.Screen name="screens/profile" />
+          <Stack.Screen name="auth/login" />
+          <Stack.Screen name="auth/register" />
+          <Stack.Screen name="screens/minesweeper" />
         </>
         <Stack.Screen name="+not-found" />
       </Stack>

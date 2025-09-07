@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import GlobalStyles from '../../styles/GlobalStyles';
 import { useRouter } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getDatabase } from 'firebase/database';
@@ -38,61 +39,33 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+        <View style={GlobalStyles.container}>
+            <Text style={GlobalStyles.title}>Login</Text>
             <TextInput
-                style={styles.input}
+                style={GlobalStyles.input}
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                placeholderTextColor="#181717ff"
             />
             <TextInput
-                style={styles.input}
+                style={GlobalStyles.input}
                 placeholder="Hasło"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
+                placeholderTextColor="#181717ff"
             />
             <Button title="Zaloguj się" onPress={handleLogin} />
-            <TouchableOpacity onPress={handleRegisterRedirect} style={styles.registerLink}>
-                <Text style={styles.registerText}>Nie masz konta? Zarejestruj się</Text>
+            <TouchableOpacity onPress={handleRegisterRedirect} style={{ marginTop: 16, alignItems: 'center' }}>
+                <Text style={{ color: '#007bff', fontSize: 16 }}>Nie masz konta? Zarejestruj się</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 24,
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 32,
-        marginBottom: 32,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    input: {
-        height: 48,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 16,
-        paddingHorizontal: 12,
-        fontSize: 16,
-    },
-    registerLink: {
-        marginTop: 16,
-        alignItems: 'center',
-    },
-    registerText: {
-        color: '#007bff',
-        fontSize: 16,
-    },
-});
+
 
 export default Login;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { View, Text, TextInput, Button, Alert } from 'react-native';
+import GlobalStyles from '../../styles/GlobalStyles';
+import { getAuth, createUserWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { router } from 'expo-router';
 
@@ -9,6 +10,7 @@ const RegisterScreen = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const email_pattern = new RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+    const [name, setName] = useState('');
 
     const handleRegister = () => {
         if (!email || !password || !confirmPassword) {
@@ -28,12 +30,17 @@ const RegisterScreen = () => {
             .then(async (userCredential) => {
                 //success
                 const user = userCredential.user;
+                // Update user profile with display name
+                if (user) {
+                    await updateProfile(user, { displayName: name });
+                }
                 // Store additional user info in Realtime Database
-                var data = {"email": email};
+                var data = {"email": email, "points": 0};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
+                
                 router.dismissAll();
-                router.push('/auth/setup');
+                router.push('/');
             })
             .catch((error) => {
                 Alert.alert('Błąd', error.message);
@@ -41,10 +48,17 @@ const RegisterScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Register</Text>
+        <View style={GlobalStyles.container}>
+            <Text style={GlobalStyles.title}>Register</Text>
             <TextInput
-                style={styles.input}
+                style={GlobalStyles.input}
+                placeholder="Imię"
+                placeholderTextColor="#181717ff"
+                value={name}
+                onChangeText={setName}
+            />
+            <TextInput
+                style={GlobalStyles.input}
                 placeholder="Email"
                 placeholderTextColor="#181717ff"
                 autoCapitalize="none"
@@ -53,7 +67,7 @@ const RegisterScreen = () => {
                 onChangeText={setEmail}
             />
             <TextInput
-                style={styles.input}
+                style={GlobalStyles.input}
                 placeholder="Hasło"
                 secureTextEntry
                 value={password}
@@ -61,7 +75,7 @@ const RegisterScreen = () => {
                 placeholderTextColor="#181717ff"
             />
             <TextInput
-                style={styles.input}
+                style={GlobalStyles.input}
                 placeholder="Potwierdź Hasło"
                 secureTextEntry
                 value={confirmPassword}
@@ -73,27 +87,6 @@ const RegisterScreen = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 24,
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 32,
-        textAlign: 'center',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 16,
-        fontSize: 16,
-    },
-});
+
 
 export default RegisterScreen;
