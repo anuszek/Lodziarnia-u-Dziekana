@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, Alert, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, FlatList, Image } from 'react-native';
 import GlobalStyles from '../../styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import {getAuth, signOut, User} from 'firebase/auth';
-
-
+import {getAuth, User} from 'firebase/auth';
 import { MaterialIcons } from '@expo/vector-icons';
-import { query, getDocs, orderBy, collection } from 'firebase/firestore';
-import { dbFirestore } from '../../firebase'; // Adjust the path if your firebase config is elsewhere
+import { articles } from '../../assets/articles/articles';
+
 
 
 
@@ -15,7 +13,6 @@ const Home = () => {
     const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [articles, setArticles] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -23,28 +20,6 @@ const Home = () => {
         setUser(auth.currentUser);
     }, []);
 
-// Articles fetching is currently disabled
-// Remind when i'll care
-// Head hurts :<<<<<<<<
-    useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const q = query(collection(dbFirestore, 'articles'));
-        const snapshot = await getDocs(q);
-        const list: any[] = [];
-        snapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-        setArticles(list);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArticles();
-  }, []);
   
     return (
     <SafeAreaView style={GlobalStyles.container}>
@@ -67,7 +42,7 @@ const Home = () => {
                 </View>
             </View>
             {user && (
-                <Text>Witaj, {user.displayName}!</Text>
+                <Text style={GlobalStyles.title}>Witaj, {user.displayName}!</Text>
             )}
             <FlatList
                 data={articles}
@@ -78,7 +53,9 @@ const Home = () => {
                             source={{ uri: `https://picsum.photos/seed/${item.id}/400/200` }}
                             style={styles.articleImage}
                         />
-                        <Text style={styles.article}>➡ {item.title}</Text>
+                        <Text style={styles.articleTitle}>{item.title}</Text>
+                        <Text style={styles.articleContent}>{item.content}</Text>
+                        <Text style={styles.articleAuthor}>Autor: {item.author}</Text>
                     </View>
                 )}
             />
@@ -87,13 +64,15 @@ const Home = () => {
 };
 
 
+
+
 const styles = StyleSheet.create({
     header: {
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginBottom: 0,
         marginTop: 0,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         position: 'relative',
     },
     headerIcons: {
@@ -129,22 +108,37 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     articleCard: {
-        marginVertical: 10,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
-    },
-    articleImage: {
-        width: '100%',
-        height: 150,
-        borderRadius: 8,
-        marginBottom: 8,
-    },
+  marginVertical: 10,
+  backgroundColor: "#fff",
+  borderRadius: 8,
+  padding: 12,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 2,
+},
+articleImage: {
+  width: "100%",
+  height: 150,
+  borderRadius: 8,
+  marginBottom: 8,
+},
+articleTitle: {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginBottom: 6,
+},
+articleContent: {
+  fontSize: 14,
+  marginBottom: 6,
+  color: "#555",
+},
+articleAuthor: {
+  fontSize: 12,
+  color: "#888",
+},
+
 });
 
 export default Home;
