@@ -2,6 +2,9 @@
 import Constants from "expo-constants";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
+
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -15,6 +18,7 @@ const firebaseConfig = {
   messagingSenderId: "84611145297",
   appId: "1:84611145297:web:f4e39ad5ff1f226fe3e270",
   databaseURL: "https://lodziarnia-u-dziekana-default-rtdb.europe-west1.firebasedatabase.app",
+
 };
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,5 +35,6 @@ const auth = initializeAuth(app, {
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
-export { app, database };
+const dbFirestore = getFirestore(app);
+export { app, database, dbFirestore };
 module.exports = { app };

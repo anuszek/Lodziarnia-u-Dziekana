@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, PanResponder, Dimensions, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, PanResponder, Dimensions, Text, TouchableOpacity, Alert } from "react-native";
 import GlobalStyles from '../../styles/GlobalStyles';
 import Svg, { Line, Circle, Image } from "react-native-svg";
+import { useRouter } from "expo-router";
+
+const router = useRouter();
 
 interface ConnectionPoint {
   id: string;
@@ -23,6 +26,26 @@ interface Wire {
 }
 
 const { width, height } = Dimensions.get("window");
+
+function addPointsToUser(pointsToAdd: number) {
+  const auth = require("firebase/auth");
+  const user = auth.getAuth().currentUser;
+  const db = require("firebase/database");
+  if (user) {
+    const userRef = db.ref(db.getDatabase(), "users/" + user.uid + "/points");
+    db.get(userRef).then((snapshot: any) => {
+      const currentPoints = snapshot.val() || 0;
+      db.set(userRef, currentPoints + pointsToAdd);
+      Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
+        { text: "OK", onPress: () => router.replace("/") },
+      ]);
+      router.dismissAll();
+      router.replace("/");
+    });
+  } else {
+    return;
+  }
+}
 
 export default function WiresGame() {
   const [wires, setWires] = useState<Wire[]>([]); // Explicitly type as Wire[]
@@ -245,13 +268,16 @@ export default function WiresGame() {
         return connectedRightPoint && lp.color === connectedRightPoint.color;
       });
       setIsSolved(allMatched);
+      if (allMatched) {
+        addPointsToUser(5); // Award 5 points for solving the puzzle
+      }
     } else {
       setIsSolved(false);
     }
   }, [wires, connectedPairs, leftPoints, rightPoints]);
 
   return (
-  <View style={GlobalStyles.container}>
+  <View style={[GlobalStyles.container, { paddingTop: 100 }]}>
       <View style={styles.puzzleArea} {...panResponder.panHandlers}>
         <Svg height="100%" width="100%" ref={svgRef}>
           <Image

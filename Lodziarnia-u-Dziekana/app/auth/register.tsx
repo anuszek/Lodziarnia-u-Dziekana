@@ -35,7 +35,7 @@ const RegisterScreen = () => {
                     await updateProfile(user, { displayName: name });
                 }
                 // Store additional user info in Realtime Database
-                var data = {"email": email};
+                var data = {"email": email, "points": 0};
                 const db = getDatabase();
                 await set(ref(db, 'users/' + user.uid), data);
                 

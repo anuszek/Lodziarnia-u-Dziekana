@@ -82,7 +82,7 @@ const DailyFlavors: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={GlobalStyles.container}>
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
