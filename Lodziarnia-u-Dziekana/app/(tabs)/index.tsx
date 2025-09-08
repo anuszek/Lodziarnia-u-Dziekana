@@ -18,6 +18,12 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { getDatabase, ref, set, remove } from "firebase/database";
+import { useFlavourUpdates } from "../../hooks/useFlavourUpdates";
+
+let MapView;
+if (Platform.OS !== "web") {
+  MapView = require("react-native-maps").default;
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -87,7 +93,7 @@ const Home = () => {
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState<Notifications.Notification | undefined>(undefined);
-
+  useFlavourUpdates();
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
       setExpoPushToken(token ?? "");

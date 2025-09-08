@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  apiKey: "AIzaSyArivSFwrbwSU-U_o50gTMPGaWtcurvWHg",
   authDomain: "lodziarnia-u-dziekana.firebaseapp.com",
   projectId: "lodziarnia-u-dziekana",
   storageBucket: "lodziarnia-u-dziekana.firebasestorage.app",
