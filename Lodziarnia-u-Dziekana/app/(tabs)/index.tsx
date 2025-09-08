@@ -17,7 +17,7 @@ import { articles } from "@/assets/articles/articles";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-
+import { getDatabase, ref, set, remove } from "firebase/database";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -84,6 +84,58 @@ const Home = () => {
   const [user, setUser] = useState<User | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState<Notifications.Notification | undefined>(undefined);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token ?? "");
+      console.log("Expo Push Token:", token);
+    }).catch((error: any) => {
+      setExpoPushToken(`${error}`);
+      console.log("Expo Push Token Error:", error);
+    });
+
+    const notificationListener = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
+
+    const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      notificationListener.remove();
+      responseListener.remove();
+    };
+  }, []);
+
+
+  useEffect(() => {
+    // Save token to Realtime Database under user's UID when both are available
+    if (user && expoPushToken) {
+      const db = getDatabase();
+      set(ref(db, `users/${user.uid}/expoPushToken`), expoPushToken);
+    }
+  }, [user, expoPushToken]);
+
+  useEffect(() => {
+    const auth = getAuth();
+    setUser(auth.currentUser);
+  }, []);
+
+  const handleSignOut = async () => {
+    const auth = getAuth();
+    // Remove token from Realtime Database on logout
+    if (user) {
+      const db = getDatabase();
+      await remove(ref(db, `users/${user.uid}/expoPushToken`));
+    }
+    signOut(auth);
+  };
 
   useEffect(() => {
     const auth = getAuth();
@@ -206,6 +258,7 @@ const styles = StyleSheet.create({
   articleAuthor: {
     fontSize: 12,
     color: "#888",
+
   },
 });
 
