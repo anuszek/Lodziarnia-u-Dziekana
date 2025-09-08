@@ -38,6 +38,7 @@ export default {
       eas: {
         projectId: "5b2dd4d1-051e-443f-a383-a1c5ccbea0a8",
       },
+      firebaseApiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
     },
     plugins: [
       "expo-router",

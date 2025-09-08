@@ -6,13 +6,12 @@ import {
   FlatList,
   ActivityIndicator,
   StyleSheet,
-  Button,
   Alert,
+  TouchableOpacity,
 } from "react-native";
-import { getDatabase, ref, get, child, set, update } from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
 import { app } from "../../firebase";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { TouchableOpacity } from "react-native";
 
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import GlobalStyles from "@/styles/GlobalStyles";
@@ -27,40 +26,40 @@ const DailyFlavors: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [usrlog, setUsrlog] = useState(false);
   const [favourites, setFavourites] = useState<string[]>([]);
-  
-  const fetchFlavors = async () => {
-  try {
-    setLoading(true);
-    const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-01"
-    const db = getDatabase(app);
-    const todayRef = ref(db, `todayFlavours/${today}`);
-    const snapshot = await get(todayRef);
 
-    if (snapshot.exists()) {
-      setFlavors(snapshot.val());
-    } else {
-      // Randomize and save for today
-      const allSnapshot = await get(ref(db, "allFlavours"));
-      if (!allSnapshot.exists()) {
-        Alert.alert("Błąd", "Brak danych w allFlavours");
-        setFlavors([]);
-        return;
+  const fetchFlavors = async () => {
+    try {
+      setLoading(true);
+      const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-01"
+      const db = getDatabase(app);
+      const todayRef = ref(db, `todayFlavours/${today}`);
+      const snapshot = await get(todayRef);
+
+      if (snapshot.exists()) {
+        setFlavors(snapshot.val());
+      } else {
+        // Randomize and save for today
+        const allSnapshot = await get(ref(db, "allFlavours"));
+        if (!allSnapshot.exists()) {
+          Alert.alert("Błąd", "Brak danych w allFlavours");
+          setFlavors([]);
+          return;
+        }
+        const allFlavours = Array.isArray(allSnapshot.val())
+          ? allSnapshot.val()
+          : Object.values(allSnapshot.val());
+        const shuffled = [...allFlavours].sort(() => Math.random() - 0.5);
+        const todayFlavours = shuffled.slice(0, 3);
+        await set(todayRef, todayFlavours);
+        setFlavors(todayFlavours);
       }
-      const allFlavours = Array.isArray(allSnapshot.val())
-        ? allSnapshot.val()
-        : Object.values(allSnapshot.val());
-      const shuffled = [...allFlavours].sort(() => Math.random() - 0.5);
-      const todayFlavours = shuffled.slice(0, 3);
-      await set(todayRef, todayFlavours);
-      setFlavors(todayFlavours);
+    } catch (error) {
+      console.error("Błąd pobierania smaków:", error);
+      setFlavors([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Błąd pobierania smaków:", error);
-    setFlavors([]);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   useEffect(() => {
     if (user) {
       const db = getDatabase(app);

@@ -8,11 +8,11 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import GlobalStyles from "../../styles/GlobalStyles";
+import GlobalStyles from "@/styles/GlobalStyles";
 import { useRouter } from "expo-router";
 import { getAuth, User } from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
-import { articles } from "../../assets/articles/articles";
+import { articles } from "@/assets/articles/articles";
 
 const Home = () => {
   const router = useRouter();

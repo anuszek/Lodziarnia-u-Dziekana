@@ -1,10 +1,16 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, StyleSheet, PanResponder, Dimensions, Text, TouchableOpacity, Alert } from "react-native";
-import GlobalStyles from '../../styles/GlobalStyles';
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import {
+  View,
+  StyleSheet,
+  PanResponder,
+  Dimensions,
+  Alert,
+} from "react-native";
+import GlobalStyles from "@/styles/GlobalStyles";
 import Svg, { Line, Circle, Image } from "react-native-svg";
 import { useRouter } from "expo-router";
-
-const router = useRouter();
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, get, set } from "firebase/database";
 
 interface ConnectionPoint {
   id: string;
@@ -27,20 +33,22 @@ interface Wire {
 
 const { width, height } = Dimensions.get("window");
 
-function addPointsToUser(pointsToAdd: number) {
-  const auth = require("firebase/auth");
-  const user = auth.getAuth().currentUser;
-  const db = require("firebase/database");
+const COLORS: string[] = ["red", "blue", "yellow", "magenta"]; // Explicitly type
+
+const POINT_SIZE: number = 35; // Size of the connection circles
+
+function addPointsToUser(pointsToAdd: number, router: any) {
+  const user = getAuth().currentUser;
   if (user) {
-    const userRef = db.ref(db.getDatabase(), "users/" + user.uid + "/points");
-    db.get(userRef).then((snapshot: any) => {
+    const userRef = ref(getDatabase(), "users/" + user.uid + "/points");
+    get(userRef).then((snapshot: any) => {
       const currentPoints = snapshot.val() || 0;
-      db.set(userRef, currentPoints + pointsToAdd);
+      set(userRef, currentPoints + pointsToAdd);
       Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
-        { text: "OK", onPress: () => router.replace("/") },
+        { text: "OK", onPress: () => {router.replace("/")} },
       ]);
-      router.dismissAll();
-      router.replace("/");
+      // router.dismissAll();
+      // router.replace("/");
     });
   } else {
     return;
@@ -48,6 +56,7 @@ function addPointsToUser(pointsToAdd: number) {
 }
 
 export default function WiresGame() {
+  const router = useRouter();
   const [wires, setWires] = useState<Wire[]>([]); // Explicitly type as Wire[]
   const [activeWire, setActiveWire] = useState<Wire | null>(null); // Explicitly type as Wire or null
   const [leftPoints, setLeftPoints] = useState<ConnectionPoint[]>([]); // Explicitly type as ConnectionPoint[]
@@ -58,15 +67,6 @@ export default function WiresGame() {
   const [isSolved, setIsSolved] = useState<boolean>(false);
 
   const svgRef = useRef<Svg>(null); // Reference to the SVG component, explicitly type
-
-  const COLORS: string[] = [
-    "red",
-    "blue",
-    "yellow",
-    "magenta",
-  ]; // Explicitly type
-
-  const POINT_SIZE: number = 35; // Size of the connection circles
 
   const convertToSVGCoords = (screenX: number, screenY: number) => {
     // Account for the View's centering and SVG positioning
@@ -79,11 +79,7 @@ export default function WiresGame() {
     };
   };
 
-  useEffect(() => {
-    initializePoints();
-  }, []);
-
-  const initializePoints = () => {
+  const initializePoints = useCallback(() => {
     const shuffledColors = [...COLORS].sort(() => Math.random() - 0.5);
     const rightShuffledColors = [...shuffledColors].sort(
       () => Math.random() - 0.5
@@ -119,14 +115,17 @@ export default function WiresGame() {
     setWires([]);
     setConnectedPairs({});
     setIsSolved(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    initializePoints();
+  }, [initializePoints]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gestureState) => true,
     onMoveShouldSetPanResponder: (evt, gestureState) => true,
 
     onPanResponderGrant: (evt, gestureState) => {
-      // Now this will always use the current leftPoints state
       if (leftPoints.length === 0) {
         return;
       }
@@ -269,15 +268,15 @@ export default function WiresGame() {
       });
       setIsSolved(allMatched);
       if (allMatched) {
-        addPointsToUser(5); // Award 5 points for solving the puzzle
+        addPointsToUser(5, router); // Award 5 points for solving the puzzle
       }
     } else {
       setIsSolved(false);
     }
-  }, [wires, connectedPairs, leftPoints, rightPoints]);
+  }, [wires, connectedPairs, leftPoints, rightPoints, router]);
 
   return (
-  <View style={[GlobalStyles.container, { paddingTop: 100 }]}>
+    <View style={[GlobalStyles.container, { paddingTop: 100 }]}>
       <View style={styles.puzzleArea} {...panResponder.panHandlers}>
         <Svg height="100%" width="100%" ref={svgRef}>
           <Image
@@ -341,17 +340,11 @@ export default function WiresGame() {
           )}
         </Svg>
       </View>
-
-      {isSolved && <Text style={styles.solvedText}>Task Complete</Text>}
-      <TouchableOpacity onPress={initializePoints} style={GlobalStyles.button}>
-        <Text style={GlobalStyles.buttonText}>Reset Puzzle</Text>
-      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  // ...existing code...
   puzzleArea: {
     width: width * 0.9,
     height: height * 0.7,
@@ -364,8 +357,6 @@ const styles = StyleSheet.create({
   solvedText: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "lightgreen",
     marginTop: 20,
   },
-  // ...existing code...
 });

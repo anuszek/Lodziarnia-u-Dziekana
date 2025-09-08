@@ -1,27 +1,25 @@
 import { Cell } from "@/components/minesweeper/Cell";
 import { Scoreboard } from "@/components/minesweeper/Scoreboard";
 import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "expo-router";
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref, get, set } from "firebase/database";
 
-const router = useRouter();
-
-function addPointsToUser(pointsToAdd: number) {
-  const auth = require("firebase/auth");
-  const user = auth.getAuth().currentUser;
-  const db = require("firebase/database");
+function addPointsToUser(pointsToAdd: number, router: any) {
+  const user = getAuth().currentUser;
   if (user) {
-    const userRef = db.ref(db.getDatabase(), "users/" + user.uid + "/points");
-    db.get(userRef).then((snapshot: any) => {
+    const userRef = ref(getDatabase(), "users/" + user.uid + "/points");
+    get(userRef).then((snapshot: any) => {
       const currentPoints = snapshot.val() || 0;
-      db.set(userRef, currentPoints + pointsToAdd);
+      set(userRef, currentPoints + pointsToAdd);
       Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
         { text: "OK", onPress: () => router.replace("/") },
       ]);
-      router.dismissAll();
-      router.replace("/");
+      // router.dismissAll();
+      // router.replace("/");
     });
-  }else {
+  } else {
     return;
   }
 }
@@ -41,6 +39,7 @@ type CellData = {
 };
 
 export default function Minesweeper() {
+  const router = useRouter();
   const boardPadding = 20;
   const availableWidth = screenWidth - boardPadding * 2;
   const cellSize = Math.floor(availableWidth / GRID_SIZE);
@@ -80,11 +79,7 @@ export default function Minesweeper() {
     }
   }, [gameOver, gameWon]);
 
-  useEffect(() => {
-    initializeBoard();
-  }, []);
-
-  const initializeBoard = () => {
+  const initializeBoard = useCallback(() => {
     const newBoard: CellData[][] = Array.from({ length: GRID_SIZE }, (_, row) =>
       Array.from({ length: GRID_SIZE }, (_, col) => ({
         row,
@@ -131,7 +126,11 @@ export default function Minesweeper() {
     setMinesLeft(MINE_COUNT);
     setGameOver(false);
     setGameWon(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    initializeBoard();
+  }, [initializeBoard]);
 
   const countAdjacentMines = (
     board: CellData[][],
@@ -237,7 +236,7 @@ export default function Minesweeper() {
     }
     if (closedNonMines === 0) {
       setGameWon(true);
-      addPointsToUser(10);
+      addPointsToUser(10, router);
     }
   };
 
