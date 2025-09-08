@@ -86,7 +86,7 @@ const Settings = () => {
       <View style={GlobalStyles.button}>
         <Button title="Wyloguj" onPress={handleLogout} color="black" />
       </View>
-      <Button title="Usuń Konto" onPress={handleRemoveUser} color="red" />
+      
       <View style={GlobalStyles.button}>
         <Button
           title="Zmień nazwę użytkownika"
@@ -131,6 +131,7 @@ const Settings = () => {
           color="blue"
         />
       </View>
+      <Button title="Usuń Konto" onPress={handleRemoveUser} color="red" />
     </SafeAreaView>
   );
 };

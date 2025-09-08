@@ -45,7 +45,7 @@ function addPointsToUser(pointsToAdd: number, router: any) {
       const currentPoints = snapshot.val() || 0;
       set(userRef, currentPoints + pointsToAdd);
       Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
-        { text: "OK", onPress: () => {router.replace("/")} },
+        { text: "OK", onPress: () => {router.back()} },
       ]);
       // router.dismissAll();
       // router.replace("/");

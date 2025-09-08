@@ -7,7 +7,7 @@ import {
   Alert,
  StyleSheet } from "react-native";
 import GlobalStyles from "@/styles/GlobalStyles";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { get, getDatabase, ref, update, set } from "firebase/database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { CircuitBoard } from "lucide-react-native";
@@ -38,23 +38,27 @@ const MoreScreen = () => {
       .catch((error) => {
         console.error("Error fetching rewards:", error);
       });
+    }, [db]);
 
-    if (currentUser) {
-      const userPointsRef = ref(db, `users/${currentUser.uid}/points`);
-      get(userPointsRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            const points = snapshot.val();
-            setUserPoints(points);
-          } else {
-            console.log("No points data found for user");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching user points:", error);
-        });
-    }
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (user) {
+        const userPointsRef = ref(db, `users/${user.uid}/points`);
+        get(userPointsRef)
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              const points = snapshot.val();
+              setUserPoints(points);
+            } else {
+              console.log("No points data found for user");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user points:", error);
+          });
+      }
+    }, [user, db])
+  );
 
   return (
     <View style={GlobalStyles.container}>

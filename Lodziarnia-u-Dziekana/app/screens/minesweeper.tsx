@@ -14,7 +14,7 @@ function addPointsToUser(pointsToAdd: number, router: any) {
       const currentPoints = snapshot.val() || 0;
       set(userRef, currentPoints + pointsToAdd);
       Alert.alert("Gratulacje!", "Zdobyłeś " + pointsToAdd + " punktów!", [
-        { text: "OK", onPress: () => router.replace("/") },
+        { text: "OK", onPress: () => router.back() },
       ]);
       // router.dismissAll();
       // router.replace("/");
@@ -25,7 +25,7 @@ function addPointsToUser(pointsToAdd: number, router: any) {
 }
 
 const GRID_SIZE = 10;
-const MINE_COUNT = 10;
+const MINE_COUNT = 1;
 const { width: screenWidth } = Dimensions.get("window");
 
 type CellData = {
