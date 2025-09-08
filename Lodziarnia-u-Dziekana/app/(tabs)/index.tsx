@@ -17,7 +17,7 @@ import { articles } from "@/assets/articles/articles";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { getDatabase, ref, set, remove } from "firebase/database";
+
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
