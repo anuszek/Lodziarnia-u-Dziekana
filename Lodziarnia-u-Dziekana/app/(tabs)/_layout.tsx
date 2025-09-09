@@ -7,6 +7,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -32,7 +33,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <MaterialCommunityIcons size={28} name="home" color={color} />
           ),
         }}
       />
@@ -41,7 +42,7 @@ export default function TabLayout() {
         options={{
           title: "Smaki",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="ice.cream" color={color} />
+            <MaterialCommunityIcons size={28} name="ice-cream" color={color} />
           ),
         }}
       />
@@ -50,7 +51,7 @@ export default function TabLayout() {
         options={{
           title: "Stalls",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <MaterialCommunityIcons size={28} name="map-marker-multiple" color={color} />
           ),
         }}
       />
@@ -59,7 +60,7 @@ export default function TabLayout() {
         options={{
           title: "Games",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="gamecontroller.fill" color={color} />
+            <MaterialCommunityIcons size={28} name="gamepad" color={color} />
           ),
         }}
       />
