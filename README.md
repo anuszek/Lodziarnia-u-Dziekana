@@ -1,4 +1,4 @@
-# Lodziarnia-u-Dziekana# 🍦 Lodziarnia u Dziekana (Dean's Ice Cream Shop)
+# 🍦Lodziarnia u Dziekana
 
 *Where academic excellence meets frozen deliciousness!*
 
@@ -47,7 +47,6 @@ Welcome to the most **scholarly** ice cream experience on mobile! This React Nat
 
 Our app currently features premium ice cream location in B-9 backdoor:
 - **Lodziarnia u Dziekana** - Where sweetness meets academia
-
 
 ### 🐛 Known Issues
 
