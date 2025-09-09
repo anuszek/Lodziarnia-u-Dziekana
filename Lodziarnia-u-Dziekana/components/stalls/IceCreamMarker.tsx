@@ -22,13 +22,16 @@ interface IceCreamMarkerProps {
 
 export function IceCreamMarker({ stall, onStallPress }: IceCreamMarkerProps) {
   return (
-    <Marker coordinate={stall.coordinate} onPress={() => onStallPress(stall)}>
-      {/* Custom marker design */}
+    <Marker
+      coordinate={stall.coordinate}
+      onPress={() => onStallPress(stall)}
+      renderToHardwareTextureAndroid={true}
+    >
       <View style={styles.markerContainer}>
-        <View style={styles.marker}>
-          <Text style={styles.markerText}>🍦</Text>
+        <View style={styles.diamond}>
+          <View style={styles.innerDiamond} />
         </View>
-        <View style={styles.markerTriangle} />
+        <View style={styles.pointer} />
       </View>
     </Marker>
   );
@@ -36,39 +39,33 @@ export function IceCreamMarker({ stall, onStallPress }: IceCreamMarkerProps) {
 
 const styles = StyleSheet.create({
   markerContainer: {
-    alignItems: "center",
+    alignItems: 'center',
   },
-  marker: {
-    backgroundColor: "#FF69B4",
-    padding: 8,
-    borderRadius: 20,
-    borderWidth: 3,
-    borderColor: "#FFFFFF",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  diamond: {
+    width: 24,
+    height: 24,
+    // backgroundColor: '#00fffbff',
+    transform: [{ rotate: '45deg' }],
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  markerText: {
-    fontSize: 20,
-    textAlign: "center",
+  innerDiamond: {
+    width: 16,
+    height: 16,
+    backgroundColor: '#FF69B4',
   },
-  markerTriangle: {
+  pointer: {
     width: 0,
     height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderBottomWidth: 0,
-    borderTopWidth: 10,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "#FF69B4",
-    marginTop: -1,
+    borderTopWidth: 8,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderTopColor: '#FF69B4',
+    marginTop: -4,
   },
 });

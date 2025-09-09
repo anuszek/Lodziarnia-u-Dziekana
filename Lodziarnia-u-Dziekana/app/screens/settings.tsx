@@ -1,12 +1,30 @@
-import React from "react";
-import { View, Text, Button, SafeAreaView, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  Button,
+  SafeAreaView,
+  Alert,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { getAuth, signOut, deleteUser, updateProfile } from "firebase/auth";
 import { getDatabase, ref, remove } from "firebase/database";
 import { useRouter } from "expo-router";
+import { ChangeUsernameModal } from "@/components/settings/ChangeUsernameModal";
 
 const Settings = () => {
   const router = useRouter();
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [currentUsername, setCurrentUsername] = useState<string>("");
+
+  useEffect(() => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      setCurrentUsername(user.displayName || "");
+    }
+  }, []);
 
   const handleLogout = () => {
     const auth = getAuth();
@@ -25,6 +43,23 @@ const Settings = () => {
     }
   };
 
+  const handleUsernameChange = async (newUsername: string) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (user) {
+        await updateProfile(user, { displayName: newUsername });
+        setCurrentUsername(newUsername);
+        Alert.alert("Sukces", "Nazwa użytkownika została zmieniona.");
+        router.dismissAll();
+        router.replace("/");
+      }
+    } catch (error) {
+      Alert.alert("Błąd", "Nie udało się zmienić nazwy użytkownika.");
+      console.error(error);
+    }
+  };
+
   const handleRemoveUser = () => {
     Alert.alert(
       "Usuń Konto",
@@ -38,6 +73,7 @@ const Settings = () => {
           text: "Usuń",
           style: "destructive",
           onPress: () => {
+            handleLogout();
             deleteUserAndData();
           },
         },
@@ -83,55 +119,27 @@ const Settings = () => {
   return (
     <SafeAreaView style={GlobalStyles.container}>
       <Text style={GlobalStyles.title}>Ustawienia</Text>
-      <View style={GlobalStyles.button}>
-        <Button title="Wyloguj" onPress={handleLogout} color="black" />
-      </View>
-      
-      <View style={GlobalStyles.button}>
-        <Button
-          title="Zmień nazwę użytkownika"
-          onPress={() => {
-            Alert.prompt(
-              "Zmień nazwę użytkownika",
-              "Wprowadź nową nazwę użytkownika:",
-              [
-                {
-                  text: "Anuluj",
-                  style: "cancel",
-                },
-                {
-                  text: "Zmień",
-                  onPress: async (newUsername) => {
-                    if (!newUsername) return;
-                    try {
-                      const auth = getAuth();
-                      const user = auth.currentUser;
-                      if (user) {
-                        await updateProfile(user, { displayName: newUsername });
-                        Alert.alert(
-                          "Sukces",
-                          "Nazwa użytkownika została zmieniona."
-                        );
-                        router.dismissAll();
-                        router.replace("/");
-                      }
-                    } catch (error) {
-                      Alert.alert(
-                        "Błąd",
-                        "Nie udało się zmienić nazwy użytkownika."
-                      );
-                      console.error(error);
-                    }
-                  },
-                },
-              ],
-              "plain-text"
-            );
-          }}
-          color="blue"
-        />
-      </View>
-      <Button title="Usuń Konto" onPress={handleRemoveUser} color="red" />
+      <TouchableOpacity style={GlobalStyles.button} onPress={handleLogout}>
+        <Text style={GlobalStyles.buttonText}>Wyloguj</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={GlobalStyles.button}
+        onPress={() => setShowUsernameModal(true)}
+      >
+        <Text style={GlobalStyles.buttonText}>Zmień nazwę użytkownika</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[GlobalStyles.button, { backgroundColor: '#e80000ff' }]} onPress={handleRemoveUser}>
+        <Text style={GlobalStyles.buttonText}>Usuń Konto</Text>
+      </TouchableOpacity>
+
+      <ChangeUsernameModal
+        visible={showUsernameModal}
+        onClose={() => setShowUsernameModal(false)}
+        onConfirm={handleUsernameChange}
+        currentUsername={currentUsername}
+      />
     </SafeAreaView>
   );
 };

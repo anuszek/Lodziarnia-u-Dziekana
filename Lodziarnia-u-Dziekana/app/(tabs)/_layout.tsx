@@ -31,7 +31,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Start",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="home" color={color} />
           ),
@@ -49,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="stalls"
         options={{
-          title: "Stalls",
+          title: "Lokal",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="map-marker-multiple" color={color} />
           ),
@@ -58,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="more"
         options={{
-          title: "Games",
+          title: "Gry",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons size={28} name="gamepad" color={color} />
           ),

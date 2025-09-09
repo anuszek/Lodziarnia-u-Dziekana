@@ -21,7 +21,7 @@ const GlobalStyles = StyleSheet.create({
     color: theme.tint,
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 10,
     marginTop: 40,
     textAlign: 'center',
 

@@ -14,7 +14,7 @@ interface IceCreamStall {
     longitude: number;
   };
   description: string;
-  rating: number;
+  rating: string;
   openHours: string;
   specialties: string[];
 }
@@ -25,10 +25,10 @@ const SAMPLE_STALLS: IceCreamStall[] = [
     name: "Lodziarnia u Dziekana",
     coordinate: { latitude: 50.06748570596136, longitude: 19.91592382195521 },
     description:
-      "Najlepsze lody w mieście! Tradycyjne receptury i świeże składniki.",
-    rating: 5.0,
+      "Najlepsze lody na najlepszym wydziale",
+    rating: "5.0",
     openHours: "10:00 - 22:00",
-    specialties: ["Pistacjowe", "Czekoladowe", "Waniliowe", "Sezonowe smaki"],
+    specialties: ["Panda", "5", "ładnie", "prosimy"],
   },
 ];
 

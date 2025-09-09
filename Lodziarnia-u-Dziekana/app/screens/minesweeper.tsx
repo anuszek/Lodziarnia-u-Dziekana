@@ -25,7 +25,7 @@ function addPointsToUser(pointsToAdd: number, router: any) {
 }
 
 const GRID_SIZE = 10;
-const MINE_COUNT = 1;
+const MINE_COUNT = 10;
 const { width: screenWidth } = Dimensions.get("window");
 
 type CellData = {

@@ -35,7 +35,7 @@ Notifications.setNotificationHandler({
 });
 
 function handleRegistrationError(errorMessage: string) {
-  alert(errorMessage);
+  //alert(errorMessage);
   throw new Error(errorMessage);
 }
 
@@ -132,16 +132,6 @@ const Home = () => {
     const auth = getAuth();
     setUser(auth.currentUser);
   }, []);
-
-  const handleSignOut = async () => {
-    const auth = getAuth();
-    // Remove token from Realtime Database on logout
-    if (user) {
-      const db = getDatabase();
-      await remove(ref(db, `users/${user.uid}/expoPushToken`));
-    }
-    signOut(auth);
-  };
 
   useEffect(() => {
     const auth = getAuth();
