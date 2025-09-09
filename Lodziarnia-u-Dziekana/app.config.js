@@ -19,6 +19,7 @@ export default {
           apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
         },
       },
+      googleServicesFile: "./google-services.json",
       edgeToEdgeEnabled: true,
       permissions: ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
     },

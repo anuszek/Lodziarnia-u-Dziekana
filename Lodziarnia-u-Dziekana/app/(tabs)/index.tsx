@@ -11,19 +11,15 @@ import {
 } from "react-native";
 import GlobalStyles from "@/styles/GlobalStyles";
 import { useRouter } from "expo-router";
-import { getAuth, User , signOut} from "firebase/auth";
+import { getAuth, User} from "firebase/auth";
 import { MaterialIcons } from "@expo/vector-icons";
 import { articles } from "@/assets/articles/articles";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { getDatabase, ref, set, remove } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 import { useFlavourUpdates } from "../../hooks/useFlavourUpdates";
 
-let MapView;
-if (Platform.OS !== "web") {
-  MapView = require("react-native-maps").default;
-}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
