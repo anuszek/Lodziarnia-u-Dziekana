@@ -1,0 +1,251 @@
+{
+  "allFlavours": [
+    {
+      "description": "Microsoft zwijaj rolki",
+      "name": "Szpont"
+    },
+    {
+      "description": "Gęste, kremowe lody z belgijskiej czekolady",
+      "name": "Czekolada"
+    },
+    {
+      "description": "Klasyczny sorbet z polskich truskawek",
+      "name": "Truskawka"
+    },
+    {
+      "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+      "name": "Wiśnia"
+    },
+    {
+      "description": "delikatne, kremowe i aksamitne, tworzone z prawdziwej śmietanki.",
+      "name": "Śmietankowe"
+    },
+    {
+      "description": "Subtelnie słodkie z nutą naturalnej wanilii.",
+      "name": "Waniliowe"
+    },
+    {
+      "description": "Intensywnie owocowy sorbet z soczystych malin.",
+      "name": "Malina"
+    }
+  ],
+  "rewards": {
+    "r1": {
+      "description": "Dostajesz jedną gałkę za free przy następnym zakupie.",
+      "points": 50,
+      "title": "Kupon na darmową gałkę lodów 🍦"
+    },
+    "r2": {
+      "description": "Każde lody smakują lepiej z dodatkową porcją polewy!",
+      "points": 30,
+      "title": "Podwójna polewa gratis 🍫"
+    },
+    "r3": {
+      "description": "Oszczędzaj na większych porcjach i próbuj nowych smaków.",
+      "points": 100,
+      "title": "Zniżka 20% na cały zestaw 🍨"
+    },
+    "r4": {
+      "description": "Specjalny kubek z logo lodziarni – tylko dla lojalnych klientów.",
+      "points": 200,
+      "title": "Limitowany kubek lodziarni 🥤"
+    },
+    "r5": {
+      "description": "Spróbuj naszego nowego smaku w wyjątkowej promocji.",
+      "points": 75,
+      "title": "Lody miesiąca za pół ceny 🌟"
+    }
+  },
+  "todayFlavours": {
+    "0": {
+      "description": "Microsoft zwijaj rolki",
+      "name": "Szpont"
+    },
+    "1": {
+      "description": "Klasyczny sorbet z polskich truskawek",
+      "name": "Truskawka"
+    },
+    "2": {
+      "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+      "name": "Wiśnia"
+    },
+    "2025-09-07": [
+      {
+        "description": "Microsoft zwijaj rolki",
+        "name": "Szpont"
+      },
+      {
+        "description": "Gęste, kremowe lody z belgijskiej czekolady",
+        "name": "Czekolada"
+      },
+      {
+        "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+        "name": "Wiśnia"
+      }
+    ],
+    "2025-09-08": [
+      {
+        "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+        "name": "Wiśnia"
+      },
+      {
+        "description": "Klasyczny sorbet z polskich truskawek",
+        "name": "Truskawka"
+      },
+      {
+        "description": "Gęste, kremowe lody z belgijskiej czekolady",
+        "name": "Czekolada"
+      }
+    ],
+    "2025-09-09": [
+      {
+        "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+        "name": "Wiśnia"
+      },
+      {
+        "description": "Klasyczny sorbet z polskich truskawek",
+        "name": "Truskawka"
+      },
+      {
+        "description": "Microsoft zwijaj rolki",
+        "name": "Szpont"
+      }
+    ],
+    "2025-09-10": [
+      {
+        "description": "Kwaśny wiśniowy smak w słodkim sorbecie",
+        "name": "Wiśnia"
+      },
+      {
+        "description": "delikatne, kremowe i aksamitne, tworzone z prawdziwej śmietanki.",
+        "name": "Śmietankowe"
+      },
+      {
+        "description": "Subtelnie słodkie z nutą naturalnej wanilii.",
+        "name": "Waniliowe"
+      }
+    ]
+  },
+  "users": {
+    "5eq3E7uHDOaht7mSeKclSz6rfYm1": {
+      "email": "la@la.pl",
+      "expoPushToken": "ExponentPushToken[************]",
+      "favourites": [
+        "Wiśnia"
+      ],
+      "points": 0
+    },
+    "5jsjZ5FehBXAuDyZD2xyWmDDB6h2": {
+      "age": 123,
+      "email": "l@l.pl",
+      "favourites": [
+        "Szpont",
+        "Czekolada",
+        "Truskawka"
+      ],
+      "lastName": "123",
+      "name": "szpont"
+    },
+    "9OELR9S1D5cLS4f2zHykAPONCql2": {
+      "email": "123@123.pl"
+    },
+    "LV9U0VG96hbGfd31rSWjOpk0F4k2": {
+      "email": "test@test.pl",
+      "points": 2137,
+      "rewards": [
+        {
+          "description": "Dostajesz jedną gałkę za free przy następnym zakupie.",
+          "points": 50,
+          "title": "Kupon na darmową gałkę lodów 🍦"
+        },
+        {
+          "description": "Specjalny kubek z logo lodziarni – tylko dla lojalnych klientów.",
+          "points": 200,
+          "title": "Limitowany kubek lodziarni 🥤"
+        },
+        {
+          "description": "Każde lody smakują lepiej z dodatkową porcją polewy!",
+          "points": 30,
+          "title": "Podwójna polewa gratis 🍫"
+        }
+      ]
+    },
+    "OW3dsbCUzSdVuIuXAtsHuYf2cV13": {
+      "email": "patpaj@email.pl"
+    },
+    "PHRiMqjo4RXyPU6HiOTNCVJ2f1X2": {
+      "email": "aa@aa.pl",
+      "favourites": [
+        "Śmietankowe"
+      ],
+      "points": 5
+    },
+    "V3XsXGVgjiW2US9UWwzd1dl2DIn1": {
+      "age": 22,
+      "email": "start@email.com",
+      "lastName": "dwadwa",
+      "name": "szpont"
+    },
+    "WuksEk9uPHgeN0AjEggmnEhn5ft1": {
+      "email": "b@b.pl",
+      "points": 0
+    },
+    "a8Py6vn60cMLdhhCvTHEd1OWasI3": {
+      "age": 222,
+      "email": "ll@ll.pl",
+      "expoPushToken": "ExponentPushToken[naDja5OSpZOEx-WLuTWmGw]",
+      "favourites": [
+        "Wiśnia"
+      ],
+      "lastName": "login",
+      "name": "logic",
+      "points": 25
+    },
+    "j2grEiXApFUN54qQerACYNZTsrD2": {
+      "email": "www@war.pl",
+      "isFirstLogin": true
+    },
+    "nsBQ0Sa19RMGs5A8FTE5hd9JlL02": {
+      "email": "a@a.pl",
+      "points": 15,
+      "rewards": [
+        {
+          "description": "Każde lody smakują lepiej z dodatkową porcją polewy!",
+          "points": 30,
+          "title": "Podwójna polewa gratis 🍫"
+        }
+      ]
+    },
+    "nssVq6zQm7b7cBl7kfDaDGIV8eB2": {
+      "email": "rybakm2115@gmail.com",
+      "expoPushToken": "ExponentPushToken[************]",
+      "isFirstLogin": true,
+      "points": 65,
+      "rewards": [
+        {
+          "description": "Każde lody smakują lepiej z dodatkową porcją polewy!",
+          "points": 30,
+          "title": "Podwójna polewa gratis 🍫"
+        },
+        {
+          "description": "Spróbuj naszego nowego smaku w wyjątkowej promocji.",
+          "points": 75,
+          "title": "Lody miesiąca za pół ceny 🌟"
+        },
+        {
+          "description": "Każde lody smakują lepiej z dodatkową porcją polewy!",
+          "points": 30,
+          "title": "Podwójna polewa gratis 🍫"
+        }
+      ]
+    },
+    "qGIdFrIU0aN39qGQTiAncZCwsXQ2": {
+      "email": "szpont@szpontmail.ai",
+      "isFirstLogin": true
+    },
+    "rH1TmS9GcDPhgJYLq48aaXifUsw1": {
+      "email": "1234@1234.pl",
+      "isFirstLogin": true
+    }
+  }
+}
