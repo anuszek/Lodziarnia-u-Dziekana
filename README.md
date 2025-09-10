@@ -67,7 +67,6 @@ This project is licensed under the "Academic Fair Use" license - free for educat
 
 - To all the ice cream vendors who fuel late-night study sessions
 - The Dean (obviously) for inspiring this delicious project
-- Glassman's physics
 
 ---
 
